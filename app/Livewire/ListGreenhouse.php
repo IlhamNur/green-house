@@ -6,7 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
 
-class Counter extends Component
+class ListGreenhouse extends Component
 {
     public $data;
 
@@ -19,17 +19,15 @@ class Counter extends Component
     public function render()
     {
         // Render the Livewire view with data
-        return view('livewire.counter');
+        return view('livewire.list-greenhouse');
     }
 
     public function fetchData()
     {
         // Fetch data from your database table
         $this->data = DB::select('
-            SELECT temperature, humidity, ph, soil_moisture, light_intensity
-            FROM sensor_data 
-            ORDER BY id DESC 
-            LIMIT 1
+            SELECT id,name
+            FROM list_greenhouses 
         ');
     }
 
