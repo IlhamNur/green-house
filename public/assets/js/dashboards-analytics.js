@@ -12,18 +12,14 @@
   axisColor = config.colors.axisColor;
   borderColor = config.colors.borderColor;
 
-  // Total Revenue Report Chart - Bar Chart
+  // Total Light Report Chart - Bar Chart
   // --------------------------------------------------------------------
-  const totalRevenueChartEl = document.querySelector('#totalRevenueChart'),
-    totalRevenueChartOptions = {
+  const totalLightChartEl = document.querySelector('#totalLightChart'),
+    totalLightChartOptions = {
       series: [
         {
-          name: '2021',
-          data: [18, 7, 15, 29, 18, 12, 9]
-        },
-        {
-          name: '2020',
-          data: [-13, -18, -9, -14, -5, -17, -15]
+          name: 'Sensor BH1750',
+          data: [300, 400, 380, 360, 370, 310, 400]
         }
       ],
       chart: {
@@ -78,7 +74,7 @@
         }
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        categories: ['17.00', '17.30', '18.00', '18.30', '19.00', '19.30', 'Now'],
         labels: {
           style: {
             fontSize: '13px',
@@ -269,17 +265,17 @@
         }
       }
     };
-  if (typeof totalRevenueChartEl !== undefined && totalRevenueChartEl !== null) {
-    const totalRevenueChart = new ApexCharts(totalRevenueChartEl, totalRevenueChartOptions);
-    totalRevenueChart.render();
+  if (typeof totalLightChartEl !== undefined && totalLightChartEl !== null) {
+    const totalLightChart = new ApexCharts(totalLightChartEl, totalLightChartOptions);
+    totalLightChart.render();
   }
 
-  // Growth Chart - Radial Bar Chart
+  // Light Chart - Radial Bar Chart
   // --------------------------------------------------------------------
-  const growthChartEl = document.querySelector('#growthChart'),
-    growthChartOptions = {
-      series: [78],
-      labels: ['Growth'],
+  const LightChartEl = document.querySelector('#LightChart'),
+    LightChartOptions = {
+      series: [350],
+      labels: ['lux'],
       chart: {
         height: 240,
         type: 'radialBar'
@@ -310,7 +306,10 @@
               color: headingColor,
               fontSize: '22px',
               fontWeight: '500',
-              fontFamily: 'Public Sans'
+              fontFamily: 'Public Sans',
+              formatter: function(value) {
+                return value.toFixed(0);
+              }
             }
           }
         }
@@ -350,15 +349,15 @@
         }
       }
     };
-  if (typeof growthChartEl !== undefined && growthChartEl !== null) {
-    const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
-    growthChart.render();
+  if (typeof LightChartEl !== undefined && LightChartEl !== null) {
+    const LightChart = new ApexCharts(LightChartEl, LightChartOptions);
+    LightChart.render();
   }
 
-  // Profit Report Line Chart
+  // Water Level Line Chart
   // --------------------------------------------------------------------
-  const profileReportChartEl = document.querySelector('#profileReportChart'),
-    profileReportChartConfig = {
+  const waterLevelChartEl = document.querySelector('#waterLevelChart'),
+    waterLevelChartConfig = {
       chart: {
         height: 80,
         // width: 175,
@@ -394,7 +393,7 @@
       },
       series: [
         {
-          data: [110, 270, 145, 245, 205, 285]
+          data: [50, 60, 70, 80, 60, 70]
         }
       ],
       xaxis: {
@@ -413,9 +412,9 @@
         show: false
       }
     };
-  if (typeof profileReportChartEl !== undefined && profileReportChartEl !== null) {
-    const profileReportChart = new ApexCharts(profileReportChartEl, profileReportChartConfig);
-    profileReportChart.render();
+  if (typeof waterLevelChartEl !== undefined && waterLevelChartEl !== null) {
+    const waterLevelChart = new ApexCharts(waterLevelChartEl, waterLevelChartConfig);
+    waterLevelChart.render();
   }
 
   // Order Statistics Chart

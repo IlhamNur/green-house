@@ -27,7 +27,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Dashboard | SmartGrow</title>
+    <title>Greenhouse Manage | SmartGrow</title>
 
     <meta name="description" content="" />
 
@@ -141,7 +141,7 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
+            <li class="menu-item">
               <a href="{{ route('home') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
@@ -149,7 +149,7 @@
             </li>
 
             <!-- Layouts -->
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="{{ route('greenhouse-manage') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Greenhouse Manage</div>
@@ -240,171 +240,235 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row">
-                <div class="col-lg-8 mb-4 order-0">
-                  <div class="card">
-                    <div class="d-flex align-items-end row">
-                      <div class="col-sm-7">
-                        <div class="card-body">
-                          <h5 class="card-title text-primary">Welcome {{ Auth::user()->name }}! 🎉</h5>
-                          <p class="mb-4">
-                            This is your <span class="fw-bold">Greenhouse 1</span> dashboard monitoring. Change the greenhouse data you want to display by clicking the button below.
-                          </p>
-
-                          <a href="{{ route('greenhouse-manage') }}" class="btn btn-sm btn-outline-primary">Manage Greenhouse</a>
+              <!-- Basic Bootstrap Table -->
+              <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">GreenHouse List</h5>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">
+                      <span class="tf-icons bx bx-plus-circle"></span>&nbsp; Add GreenHouse
+                    </button>
+                  </div>
+                <div class="text-nowrap">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>GreenHouse Name</th>
+                        <th>Plant Type</th>
+                        <th>Planting Date</th>
+                        <th>Update Date</th>
+                        <th>Pin</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                      <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>GreenHouse 1</strong></td>
+                        <td>Carrot</td>
+                        <td>24-08-2024</td>
+                        <td>27-08-2024</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-primary active">
+                                <i class="tf-icons bx bx-pin"></i>
+                            </button>
+                        </td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle"
+                                ><i class="bx bx-info-circle me-1"></i> More Info</a
+                              >
+                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#smallModal"
+                                ><i class="bx bx-trash me-1"></i> Delete</a
+                              >
+                              <a class="dropdown-item" href="javascript:void(0);"
+                                ><i class="bx bx-download me-1"></i> Download Data</a
+                              >
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!--/ Basic Bootstrap Table -->
+              {{-- Greenhouse Add Modal --}}
+              <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalCenterTitle">Add Greeenhouse</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col mb-3">
+                          <label for="nameWithTitle" class="form-label">Name</label>
+                          <input
+                            type="text"
+                            id="nameWithTitle"
+                            class="form-control"
+                            placeholder="Enter Name"
+                          />
                         </div>
                       </div>
-                      <div class="col-sm-5 text-center text-sm-left">
-                        <div class="card-body pb-0 px-0 px-md-4">
-                          <img
-                            src="assets/img/illustrations/man-with-laptop-light.png"
-                            height="140"
-                            alt="Add Greenhouse"
-                            data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                            data-app-light-img="illustrations/man-with-laptop-light.png"
+                      <div class="row g-2">
+                        <div class="col mb-0">
+                          <label for="emailWithTitle" class="form-label">Email</label>
+                          <input
+                            type="text"
+                            id="emailWithTitle"
+                            class="form-control"
+                            placeholder="xxxx@xxx.xx"
+                          />
+                        </div>
+                        <div class="col mb-0">
+                          <label for="dobWithTitle" class="form-label">DOB</label>
+                          <input
+                            type="text"
+                            id="dobWithTitle"
+                            class="form-control"
+                            placeholder="DD / MM / YY"
                           />
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-4 order-1">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img
-                                src="assets/img/icons/unicons/temperature.png"
-                                alt="temperature"
-                                class="rounded"
-                              />
-                            </div>
-                          </div>
-                          <span class="fw-semibold d-block mb-1">Temperature</span>
-                          <h3 class="card-title mb-2">35&deg;C</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> 2&deg;C</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img
-                                src="assets/img/icons/unicons/humidity.png"
-                                alt="Credit Card"
-                                class="rounded"
-                              />
-                            </div>
-                          </div>
-                          <span>Humidity</span>
-                          <h3 class="card-title text-nowrap mb-1">50%</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> 2%</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Total Light -->
-                <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
-                  <div class="card">
-                    <div class="row row-bordered g-0">
-                      <div class="col-md-8">
-                        <h5 class="card-header m-0 me-2 pb-3">Light Intensity</h5>
-                        <div id="totalLightChart" class="px-2"></div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="card-body">
-                          <div class="text-center">
-                          </div>
-                        </div>
-                        <div id="LightChart"></div>
-                        <div class="text-center fw-semibold pt-3 mb-2">Light Intensity Treshold</div>
-
-                        <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                          <div class="d-flex">
-                            <div class="me-2">
-                              <span class="badge bg-label-primary p-2"><i class="bx bx-down-arrow-alt text-primary"></i></span>
-                            </div>
-                            <div class="d-flex flex-column">
-                              <small>Lower</small>
-                              <h6 class="mb-0">300lux</h6>
-                            </div>
-                          </div>
-                          <div class="d-flex">
-                            <div class="me-2">
-                              <span class="badge bg-label-info p-2"><i class="bx bx-up-arrow-alt text-info"></i></span>
-                            </div>
-                            <div class="d-flex flex-column">
-                              <small>Upper</small>
-                              <h6 class="mb-0">400lux</h6>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--/ Total Light -->
-                <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
-                  <div class="row">
-                    <div class="col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img src="assets/img/icons/unicons/phosphorus.png" alt="Nutrition" class="rounded" />
-                            </div>
-                          </div>
-                          <span class="d-block mb-1">Nutrition</span>
-                          <h3 class="card-title text-nowrap mb-2">300ppm</h3>
-                          <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> 50ppm</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img src="assets/img/icons/unicons/ph-balance.png" alt="pH" class="rounded" />
-                            </div>
-                          </div>
-                          <span class="fw-semibold d-block mb-1">pH</span>
-                          <h3 class="card-title mb-2">70ppm</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> 50ppm</small>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- </div>
-    <div class="row"> -->
-                    <div class="col-12 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
-                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
-                              <div class="card-title">
-                                <h5 class="text-nowrap mb-2">Water Level</h5>
-                                <span class="badge bg-label-warning rounded-pill">in percentage</span>
-                              </div>
-                              <div class="mt-sm-auto">
-                                <small class="text-success text-nowrap fw-semibold"
-                                  ><i class="bx bx-chevron-up"></i> 60%</small
-                                >
-                                <h3 class="mb-0">80%</h3>
-                              </div>
-                            </div>
-                            <div id="waterLevelChart"></div>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                      </button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                   </div>
                 </div>
               </div>
+                <!-- Modal 1-->
+                <div
+                    class="modal fade"
+                    id="modalToggle"
+                    aria-labelledby="modalToggleLabel"
+                    tabindex="-1"
+                    style="display: none"
+                    aria-hidden="true"
+                >
+                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="modalToggleLabel">GreenHouse 1</h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                        </div>
+                        <div class="modal-body">
+                         <ol class="list-group list-group-numbered">
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Plant Type : </strong> Carrot</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Planting Date : </strong> 24-08-2024</li>
+                         </ol>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button
+                            class="btn btn-primary"
+                            data-bs-target="#modalToggle2"
+                            data-bs-toggle="modal"
+                            data-bs-dismiss="modal"
+                        >
+                            Edit
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Modal 2-->
+                <div
+                    class="modal fade"
+                    id="modalToggle2"
+                    aria-hidden="true"
+                    aria-labelledby="modalToggleLabel2"
+                    tabindex="-1"
+                >
+                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="modalToggleLabel2">Edit Data GreenHouse 1</h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                              <div class="col mb-3">
+                                <label for="nameBasic" class="form-label">Name</label>
+                                <input type="text" id="nameBasic" class="form-control" placeholder="Enter Name" />
+                              </div>
+                            </div>
+                            <div class="row g-2">
+                              <div class="col mb-0">
+                                <label for="emailBasic" class="form-label">Email</label>
+                                <input type="text" id="emailBasic" class="form-control" placeholder="xxxx@xxx.xx" />
+                              </div>
+                              <div class="col mb-0">
+                                <label for="dobBasic" class="form-label">DOB</label>
+                                <input type="text" id="dobBasic" class="form-control" placeholder="DD / MM / YY" />
+                              </div>
+                            </div>
+                          </div>
+                        <div class="modal-footer">
+                        <button
+                            class="btn btn-outline-secondary"
+                            data-bs-target="#modalToggle"
+                            data-bs-toggle="modal"
+                            data-bs-dismiss="modal"
+                        >
+                            Back
+                        </button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                {{-- Delete Alert Modal --}}
+                <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel2">Delete Greenhouse</h5>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are You Sure?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                            Close
+                          </button>
+                          <button type="button" class="btn btn-danger">Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
             </div>
             <!-- / Content -->
 
