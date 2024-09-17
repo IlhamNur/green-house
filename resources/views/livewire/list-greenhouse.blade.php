@@ -3,7 +3,8 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Name</th>
+                <th>Greenhouse Name</th>
+                <th>Plant Name</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -11,7 +12,8 @@
             @foreach ($data as $datas)
             <tr>
                 <td>{{$loop->iteration}}</td>
-                <td>{{$datas->name}}</td>
+                <td>{{$datas->greenhouse}}</td>
+                <td>{{$datas->tanaman}}</td>
                 <td>
                     <a href="{{ route('editGreenhouse', $datas->id) }}"><button type="button" class="btn btn-outline-primary">More Info</button></a>                    
                     <!-- <button type="button" class="btn btn-outline-secondary" wire:click="$emit('editGreenhouse', {{$datas->id}})">Edit</button> -->

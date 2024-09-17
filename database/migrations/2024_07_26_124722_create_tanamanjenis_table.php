@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('tanamanjenis', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('id_user');
             $table->string('name')->index();
             $table->unsignedInteger('temperature');
             $table->unsignedInteger('humidity');

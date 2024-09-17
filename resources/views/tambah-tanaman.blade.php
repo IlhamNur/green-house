@@ -18,12 +18,12 @@
         <input type="text" class="form-control" id="humidityname" name="humidity">
     </div>
     <div class="form-group">
-        <label for="ph" class="col-form-label">ph:</label>
-        <input type="text" class="form-control" id="ph" name="ph">
+        <label for="soil_max" class="col-form-label">soil_max:</label>
+        <input type="text" class="form-control" id="soil_max" name="soil_max">
     </div>
     <div class="form-group">
-        <label for="soil_moisture" class="col-form-label">soil_moisture:</label>
-        <input type="text" class="form-control" id="soil_moisture" name="soil_moisture">
+        <label for="soil_min" class="col-form-label">soil_min:</label>
+        <input type="text" class="form-control" id="soil_min" name="soil_min">
     </div>
     <div class="form-group">
         <label for="light_intensity" class="col-form-label">light_intensity:</label>

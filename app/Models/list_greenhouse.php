@@ -11,7 +11,8 @@ class list_greenhouse extends Model
 
     protected $fillable = [
         'name',
-        'tanaman',
+        'id_user',
+        'id_tanaman',
         'updated_at',
         'created_at',
       ];

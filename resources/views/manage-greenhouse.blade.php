@@ -56,7 +56,7 @@
                                     <li><a class="dropdown-item" href="#" onclick="selectItem(event, '{{$data->id}}', '{{$data->name}}')">{{$data->name}}</a></li>
                                     @endforeach
                                 </ul>
-                                <input type="hidden" name="tanaman" id="tanaman">
+                                <input type="hidden" name="id_tanaman" id="id_tanaman">
                             </div>
                         </div>
 
@@ -79,7 +79,7 @@
         function selectItem(event, id, name) {
             event.preventDefault();
             document.getElementById("jenisTanamanBtn").textContent = name;
-            document.getElementById("tanaman").value = id;
+            document.getElementById("id_tanaman").value = id;
             document.getElementById("dropdownMenu").classList.remove("show");
         }
 

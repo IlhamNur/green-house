@@ -14,9 +14,10 @@ class GreenhoseManage extends Seeder
      */
     public function run(): void
     {
+
         //
         DB::table('list_greenhouses')->insert([
-            'name' => 'sawi',
+            'name' => 'greenhouseku',
             'id_user' => 1,
             'id_tanaman' => 1,
         ]);

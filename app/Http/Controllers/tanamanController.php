@@ -20,10 +20,11 @@ class tanamanController extends Controller
         'name' => 'required',
         'temperature' => 'required',
         'humidity' => 'required',
-        'ph' => 'required',
-        'soil_moisture' => 'required',
+        'soil_max' => 'required',
+        'soil_min' => 'required',
         'light_intensity' => 'required',
         ]);
+
         tanamanjenis::create($request->all());
         return redirect()->route('manageGreenhouse')
         ->with('success', 'Post created successfully.');
@@ -34,25 +35,6 @@ class tanamanController extends Controller
         $data->delete();
         return redirect()->route('manageGreenhouse')
         ->with('success', 'Post deleted successfully');
-    }
-
-    public function upsert(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required',
-            'temperature',
-            'humidity',
-            'ph',
-            'soil_moisture',
-            'light_intensity',
-            ]);
-        tanamanjenis::upsert(
-            ['name' => $request->name],
-            $request->only(['temperature', 'humidity', 'ph', 'soil_moisture', 'light_intensity'])
-        );        
-        
-        return redirect()->route('manageGreenhouse')
-        ->with('success', 'Post updated successfully.');
     }
 
     public function edit($id)
@@ -68,8 +50,8 @@ class tanamanController extends Controller
         'name' => 'required',
         'temperature' => 'required',
         'humidity' => 'required',
-        'ph' => 'required',
-        'soil_moisture' => 'required',
+        'soil_max' => 'required',
+        'soil_min' => 'required',
         'light_intensity' => 'required',
         ]);
         $data = tanamanjenis::find($id);

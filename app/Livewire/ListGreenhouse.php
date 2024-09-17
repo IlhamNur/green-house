@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class ListGreenhouse extends Component
@@ -24,11 +25,15 @@ class ListGreenhouse extends Component
 
     public function fetchData()
     {
+        $id = Auth::user()->id;
+
         // Fetch data from your database table
         $this->data = DB::select('
-            SELECT id,name
-            FROM list_greenhouses 
-        ');
+            SELECT LG.id AS id, LG.name AS greenhouse, TJ.name AS tanaman
+            FROM list_greenhouses AS LG
+            INNER JOIN tanamanjenis AS TJ ON LG.id_tanaman = TJ.id
+            WHERE LG.id_user = ?
+        ', [$id]);
     }
 
     public function updated()

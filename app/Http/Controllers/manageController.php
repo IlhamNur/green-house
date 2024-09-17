@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\list_greenhouse;
 
 class manageController extends Controller
 {
     public function index()
     {
+        $id = Auth::user()->id;
         $data = DB::select('
-        select * from list_greenhouses
-        ');
+            SELECT LG.name AS greenhouse, TJ.name AS tanaman
+            FROM list_greenhouses AS LG
+            INNER JOIN tanamanjenis AS TJ ON LG.id_tanaman = TJ.id
+            WHERE LG.id_user = ?
+        ', [$id]);
+        // dd($data);
 
         return view('manage-greenhouse', compact('data'));
     }
@@ -21,8 +27,9 @@ class manageController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'tanaman' => 'required', 
+            'id_tanaman' => 'required', 
         ]);
+        $request['id_user'] = Auth::user()->id;
 
         list_greenhouse::create($request->all());
         return redirect()->route('manageGreenhouse')
@@ -44,8 +51,9 @@ class manageController extends Controller
     {
         $request->validate([
         'name' => 'required|max:255',
-        'tanaman' => 'required',
+        'id_tanaman' => 'required',
         ]);
+        $request['id_user'] = Auth::user()->id;
         $data = list_greenhouse::find($id);
         $data->update($request->all());
         return redirect()->route('manageGreenhouse')
