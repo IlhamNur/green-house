@@ -22,7 +22,7 @@ class LoginController extends Controller
             return redirect()->route('home');
         }
 
-        return redirect()->back()->withErrors(['email' => 'Invalid credentials.']);
+        return redirect()->back()->withErrors(['email' => 'Wrong Email and Password Combination!']);
     }
 
     protected function validator(array $data)

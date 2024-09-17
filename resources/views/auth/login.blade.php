@@ -134,7 +134,9 @@
                   <span class="app-brand-text demo text-body fw-bolder">SmartGrow</span>
                 </a>
               </div>
-              <div class="alert alert-danger" role="alert">Wrong Email and Password Combination!</div>
+                @if ($errors->has('email'))
+                    <div class="alert alert-danger" role="alert">{{ $errors->first('email') }}</div>
+                @endif
               <!-- /Logo -->
               <h4 class="mb-2">Welcome to SmartGrow! 👋</h4>
               <p class="mb-4">Please sign-in to your account and start the adventure</p>
@@ -145,9 +147,10 @@
                   <label for="email" class="form-label">Email</label>
                   <input
                     type="email"
-                    class="form-control"
+                    class="form-control @error('email') is-invalid @enderror"
                     id="email"
                     name="email"
+                    value="{{ old('email') }}"
                     placeholder="Enter your email"
                     autofocus
                     required
@@ -161,13 +164,18 @@
                     <input
                       type="password"
                       id="password"
-                      class="form-control"
+                      class="form-control @error('password') is-invalid @enderror"
                       name="password"
                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                       aria-describedby="password"
                       required
                     />
                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                   </div>
                 </div>
                 <div class="mb-3">
