@@ -245,7 +245,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Plant List</h5>
                   </div>
-                <div class="text-nowrap">
+                <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>
                       <tr>
