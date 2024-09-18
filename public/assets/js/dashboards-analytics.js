@@ -74,7 +74,7 @@
         }
       },
       xaxis: {
-        categories: times,
+        categories: ['60 seconds ago', '50 seconds ago', '40 seconds ago', '30 seconds ago', '20 seconds ago', '10 seconds ago', 'Now'],
         labels: {
           style: {
             fontSize: '13px',
@@ -274,7 +274,7 @@
   // --------------------------------------------------------------------
   const LightChartEl = document.querySelector('#LightChart'),
     LightChartOptions = {
-      series: lights[0],
+      series: [lights[0]],
       labels: ['lux'],
       chart: {
         height: 240,

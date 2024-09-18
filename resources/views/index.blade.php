@@ -277,7 +277,6 @@
                   </div>
                 </div>
                 @if (isset($greenhouse))
-                    @foreach ($sensorDatas as $data)
                     <div class="col-lg-4 col-md-4 order-1">
                     <div class="row">
                         <div class="col-lg-6 col-md-12 col-6 mb-4">
@@ -293,8 +292,8 @@
                                 </div>
                             </div>
                             <span class="fw-semibold d-block mb-1">Temperature</span>
-                            <h3 class="card-title mb-2">{{ $data[0]->temperature }}&deg;C</h3>
-                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ ($data[0]->temperature) - ($data[1]->temperature) }}&deg;C</small>
+                            <h3 class="card-title mb-2">{{ $sensorDatas[0]->temperature }}&deg;C</h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ ($sensorDatas[0]->temperature) - ($sensorDatas[0]->temperature) }}&deg;C</small>
                             </div>
                         </div>
                         </div>
@@ -311,8 +310,8 @@
                                 </div>
                             </div>
                             <span>Humidity</span>
-                            <h3 class="card-title text-nowrap mb-1">{{ $data[0]->humidity  }}%</h3>
-                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ ($data[0]->humidity) - ($data[1]->humidity) }}%</small>
+                            <h3 class="card-title text-nowrap mb-1">{{ $sensorDatas[0]->humidity  }}%</h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ ($sensorDatas[0]->humidity) - ($sensorDatas[1]->humidity) }}%</small>
                             </div>
                         </div>
                         </div>
@@ -362,8 +361,8 @@
                                 </div>
                             </div>
                             <span class="d-block mb-1">Nutrition</span>
-                            <h3 class="card-title text-nowrap mb-2">{{ $data[0]->nutrition }}ppm</h3>
-                            <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> {{ ($data[0]->nutrition) - ($data[1]->nutrition) }}ppm</small>
+                            <h3 class="card-title text-nowrap mb-2">{{ $sensorDatas[0]->nutrition }}ppm</h3>
+                            <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> {{ ($sensorDatas[0]->nutrition) - ($sensorDatas[1]->nutrition) }}ppm</small>
                             </div>
                         </div>
                         </div>
@@ -376,8 +375,8 @@
                                 </div>
                             </div>
                             <span class="fw-semibold d-block mb-1">pH</span>
-                            <h3 class="card-title mb-2">ph {{ $data[0]->ph }}</h3>
-                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>ph {{ ($data[0]->ph) - ($data[1]->ph) }}ppm</small>
+                            <h3 class="card-title mb-2">ph {{ $sensorDatas[0]->ph }}</h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>ph {{ ($sensorDatas[0]->ph) - ($sensorDatas[1]->ph) }}ppm</small>
                             </div>
                         </div>
                         </div>
@@ -394,9 +393,9 @@
                                 </div>
                                 <div class="mt-sm-auto">
                                     <small class="text-success text-nowrap fw-semibold"
-                                    ><i class="bx bx-chevron-up"></i> {{ $data[0]->water_level }}cm</small
+                                    ><i class="bx bx-chevron-up"></i> {{ $sensorDatas[0]->water_level }}cm</small
                                     >
-                                    <h3 class="mb-0">{{ ($data[0]->water_level) - ($data[1]->water_level) }}%</h3>
+                                    <h3 class="mb-0">{{ ($sensorDatas[0]->water_level) - ($sensorDatas[1]->water_level) }}%</h3>
                                 </div>
                                 </div>
                                 <div id="waterLevelChart"></div>
@@ -405,7 +404,6 @@
                         </div>
                         </div>
                     </div>
-                    @endforeach
                 @endif
                 </div>
               </div>
@@ -455,11 +453,20 @@
     <!-- Main JS -->
     <!-- Pass PHP data to JavaScript using inline script -->
     @if (isset($greenhouse))
-    <script>
-      var lights = @json($sensorDatas->light);
-      var waters = @json($sensorDatas->water_level);
-      var times = @json($sensorDatas->created_at);
-    </script>
+        @php
+            $lights = [];
+            $waters = [];
+        @endphp
+        @foreach ($sensorDatas as $data)
+            @php
+                $lights[] = $data->light;
+                $waters[] = $data->water_level;
+            @endphp
+        @endforeach
+        <script>
+        var lights = @json($lights);
+        var waters = @json($waters);
+        </script>
     @endif
     <script src="assets/js/main.js"></script>
 
