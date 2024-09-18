@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('greenhouses', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->integer('user_id');
             $table->string('plant_type');
             $table->integer('temperature');
@@ -20,7 +21,8 @@ return new class extends Migration
             $table->integer('nutrition');
             $table->integer('light');
             $table->integer('ph');
-            $table->integer('water_level');
+            $table->integer('water_f');
+            $table->integer('water_e');
             $table->integer('pin_status');
             $table->timestamps();
         });

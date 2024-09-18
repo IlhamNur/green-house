@@ -19,7 +19,7 @@
       series: [
         {
           name: 'Sensor BH1750',
-          data: [300, 400, 380, 360, 370, 310, 400]
+          data: lights
         }
       ],
       chart: {
@@ -74,7 +74,7 @@
         }
       },
       xaxis: {
-        categories: ['17.00', '17.30', '18.00', '18.30', '19.00', '19.30', 'Now'],
+        categories: times,
         labels: {
           style: {
             fontSize: '13px',
@@ -274,7 +274,7 @@
   // --------------------------------------------------------------------
   const LightChartEl = document.querySelector('#LightChart'),
     LightChartOptions = {
-      series: [350],
+      series: lights[0],
       labels: ['lux'],
       chart: {
         height: 240,
@@ -393,7 +393,7 @@
       },
       series: [
         {
-          data: [50, 60, 70, 80, 60, 70]
+          data: waters
         }
       ],
       xaxis: {

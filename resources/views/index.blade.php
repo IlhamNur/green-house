@@ -241,14 +241,22 @@
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row">
-                <div class="col-lg-8 mb-4 order-0">
+                @if (isset($greenhouse))
+                    <div class="col-lg-8 mb-4 order-0">
+                @else
+                    <div class="col-lg mb-4 order-0">
+                @endif
                   <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-7">
                         <div class="card-body">
                           <h5 class="card-title text-primary">Welcome {{ Auth::user()->name }}! 🎉</h5>
                           <p class="mb-4">
-                            This is your <span class="fw-bold">Greenhouse 1</span> dashboard monitoring. Change the greenhouse data you want to display by clicking the button below.
+                            @if (isset($greenhouse))
+                                This is your <span class="fw-bold">{{ $greenhouse->name }}</span> dashboard monitoring. Change the greenhouse data you want to display by clicking the button below.
+                            @else
+                                No <span class="fw-bold">Greenhouse Data</span> added. Add the greenhouse data you want to display by clicking the button below.
+                            @endif
                           </p>
 
                           <a href="{{ route('greenhouse-manage') }}" class="btn btn-sm btn-outline-primary">Manage Greenhouse</a>
@@ -268,141 +276,137 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-4 col-md-4 order-1">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img
-                                src="assets/img/icons/unicons/temperature.png"
-                                alt="temperature"
-                                class="rounded"
-                              />
+                @if (isset($greenhouse))
+                    @foreach ($sensorDatas as $data)
+                    <div class="col-lg-4 col-md-4 order-1">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12 col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <div class="avatar flex-shrink-0">
+                                <img
+                                    src="assets/img/icons/unicons/temperature.png"
+                                    alt="temperature"
+                                    class="rounded"
+                                />
+                                </div>
                             </div>
-                          </div>
-                          <span class="fw-semibold d-block mb-1">Temperature</span>
-                          <h3 class="card-title mb-2">35&deg;C</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> 2&deg;C</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img
-                                src="assets/img/icons/unicons/humidity.png"
-                                alt="Credit Card"
-                                class="rounded"
-                              />
+                            <span class="fw-semibold d-block mb-1">Temperature</span>
+                            <h3 class="card-title mb-2">{{ $data[0]->temperature }}&deg;C</h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ ($data[0]->temperature) - ($data[1]->temperature) }}&deg;C</small>
                             </div>
-                          </div>
-                          <span>Humidity</span>
-                          <h3 class="card-title text-nowrap mb-1">50%</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> 2%</small>
                         </div>
-                      </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <div class="avatar flex-shrink-0">
+                                <img
+                                    src="assets/img/icons/unicons/humidity.png"
+                                    alt="Credit Card"
+                                    class="rounded"
+                                />
+                                </div>
+                            </div>
+                            <span>Humidity</span>
+                            <h3 class="card-title text-nowrap mb-1">{{ $data[0]->humidity  }}%</h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> {{ ($data[0]->humidity) - ($data[1]->humidity) }}%</small>
+                            </div>
+                        </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                <!-- Total Light -->
-                <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
-                  <div class="card">
-                    <div class="row row-bordered g-0">
-                      <div class="col-md-8">
-                        <h5 class="card-header m-0 me-2 pb-3">Light Intensity</h5>
-                        <div id="totalLightChart" class="px-2"></div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="card-body">
-                          <div class="text-center">
-                          </div>
-                        </div>
-                        <div id="LightChart"></div>
-                        <div class="text-center fw-semibold pt-3 mb-2">Light Intensity Treshold</div>
+                    </div>
 
-                        <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                          <div class="d-flex">
-                            <div class="me-2">
-                              <span class="badge bg-label-primary p-2"><i class="bx bx-down-arrow-alt text-primary"></i></span>
-                            </div>
-                            <div class="d-flex flex-column">
-                              <small>Lower</small>
-                              <h6 class="mb-0">300lux</h6>
-                            </div>
-                          </div>
-                          <div class="d-flex">
-                            <div class="me-2">
-                              <span class="badge bg-label-info p-2"><i class="bx bx-up-arrow-alt text-info"></i></span>
-                            </div>
-                            <div class="d-flex flex-column">
-                              <small>Upper</small>
-                              <h6 class="mb-0">400lux</h6>
-                            </div>
-                          </div>
+                    <!-- Total Light -->
+                    <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
+                    <div class="card">
+                        <div class="row row-bordered g-0">
+                        <div class="col-md-8">
+                            <h5 class="card-header m-0 me-2 pb-3">Light Intensity</h5>
+                            <div id="totalLightChart" class="px-2"></div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--/ Total Light -->
-                <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
-                  <div class="row">
-                    <div class="col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img src="assets/img/icons/unicons/phosphorus.png" alt="Nutrition" class="rounded" />
+                        <div class="col-md-4">
+                            <div class="card-body">
+                            <div class="text-center">
                             </div>
-                          </div>
-                          <span class="d-block mb-1">Nutrition</span>
-                          <h3 class="card-title text-nowrap mb-2">300ppm</h3>
-                          <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> 50ppm</small>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-6 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img src="assets/img/icons/unicons/ph-balance.png" alt="pH" class="rounded" />
                             </div>
-                          </div>
-                          <span class="fw-semibold d-block mb-1">pH</span>
-                          <h3 class="card-title mb-2">70ppm</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> 50ppm</small>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- </div>
-    <div class="row"> -->
-                    <div class="col-12 mb-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
-                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
-                              <div class="card-title">
-                                <h5 class="text-nowrap mb-2">Water Level</h5>
-                                <span class="badge bg-label-warning rounded-pill">in percentage</span>
-                              </div>
-                              <div class="mt-sm-auto">
-                                <small class="text-success text-nowrap fw-semibold"
-                                  ><i class="bx bx-chevron-up"></i> 60%</small
-                                >
-                                <h3 class="mb-0">80%</h3>
-                              </div>
+                            <div id="LightChart"></div>
+                            <div class="text-center fw-semibold pt-3 mb-2">The LED will turn on if it is less than the threshold </div>
+
+                            <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-center">
+                            <div class="d-flex">
+                                <div class="me-2">
+                                <span class="badge bg-label-danger p-2"><i class="bx bx-down-arrow-alt text-danger"></i></span>
+                                </div>
+                                <div class="d-flex flex-column">
+                                <small>Threshold</small>
+                                <h6 class="mb-0">{{ $greenhouse->light }}lux</h6>
+                                </div>
                             </div>
-                            <div id="waterLevelChart"></div>
-                          </div>
+                            </div>
                         </div>
-                      </div>
+                        </div>
                     </div>
-                  </div>
+                    </div>
+                    <!--/ Total Light -->
+                    <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+                    <div class="row">
+                        <div class="col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <div class="avatar flex-shrink-0">
+                                <img src="assets/img/icons/unicons/phosphorus.png" alt="Nutrition" class="rounded" />
+                                </div>
+                            </div>
+                            <span class="d-block mb-1">Nutrition</span>
+                            <h3 class="card-title text-nowrap mb-2">{{ $data[0]->nutrition }}ppm</h3>
+                            <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> {{ ($data[0]->nutrition) - ($data[1]->nutrition) }}ppm</small>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <div class="avatar flex-shrink-0">
+                                <img src="assets/img/icons/unicons/ph-balance.png" alt="pH" class="rounded" />
+                                </div>
+                            </div>
+                            <span class="fw-semibold d-block mb-1">pH</span>
+                            <h3 class="card-title mb-2">ph {{ $data[0]->ph }}</h3>
+                            <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i>ph {{ ($data[0]->ph) - ($data[1]->ph) }}ppm</small>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                            <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                                <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                                <div class="card-title">
+                                    <h5 class="text-nowrap mb-2">Water Level</h5>
+                                    <span class="badge bg-label-warning rounded-pill">distance from lid to water</span>
+                                </div>
+                                <div class="mt-sm-auto">
+                                    <small class="text-success text-nowrap fw-semibold"
+                                    ><i class="bx bx-chevron-up"></i> {{ $data[0]->water_level }}cm</small
+                                    >
+                                    <h3 class="mb-0">{{ ($data[0]->water_level) - ($data[1]->water_level) }}%</h3>
+                                </div>
+                                </div>
+                                <div id="waterLevelChart"></div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    @endforeach
+                @endif
                 </div>
               </div>
             </div>
@@ -414,7 +418,7 @@
                 <div class="mb-2 mb-md-0">
                   ©
                   <script>
-                    document.write(new Date().getFullYear());
+                      document.write(new Date().getFullYear());
                   </script>
                   , made with ❤️ by
                   <a href="https://github.com/IlhamNur" target="_blank" class="footer-link fw-bolder">IlhamNur</a>
@@ -449,6 +453,14 @@
     <script src="assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
     <!-- Main JS -->
+    <!-- Pass PHP data to JavaScript using inline script -->
+    @if (isset($greenhouse))
+    <script>
+      var lights = @json($sensorDatas->light);
+      var waters = @json($sensorDatas->water_level);
+      var times = @json($sensorDatas->created_at);
+    </script>
+    @endif
     <script src="assets/js/main.js"></script>
 
     <!-- Page JS -->
