@@ -21,4 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/greenhouse-manage', [GreenhouseController::class, 'index'])->name('greenhouse-manage');
     Route::get('/plant-list', [PlantController::class, 'index'])->name('plant-list');
+
+    Route::post('/greenhouse-manage', [GreenhouseController::class, 'store'])->name('greenhouse-manage');
+    Route::put('/greenhouse-manage/update-pin/{id}', [GreenhouseController::class, 'updatePin'])->name('greenhouse-pin');
+    Route::put('/greenhouse-manage/update/{id}', [GreenhouseController::class, 'update'])->name('greenhouse-update');
+    Route::delete('/greenhouse-manage/{id}', [GreenhouseController::class, 'destroy'])->name('greenhouse-destroy');
+    Route::get('/greenhouse-manage/export/{id}', [GreenhouseController::class, 'export'])->name('greenhouse-export');
 });

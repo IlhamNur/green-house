@@ -238,8 +238,10 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
-
             <div class="container-xxl flex-grow-1 container-p-y">
+            @if (session('success'))
+                <div class="alert alert-success" role="alert">{{ session('success') }}</div>
+            @endif
 
 
               <!-- Basic Bootstrap Table -->
@@ -256,42 +258,57 @@
                       <tr>
                         <th>GreenHouse Name</th>
                         <th>Plant Type</th>
-                        <th>Planting Date</th>
+                        <th>Create Date</th>
                         <th>Update Date</th>
                         <th>Pin</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
+                    @if(isset($greenhouses))
+                    @foreach($greenhouses as $greenhouse)
                       <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>GreenHouse 1</strong></td>
-                        <td>Carrot</td>
-                        <td>24-08-2024</td>
-                        <td>27-08-2024</td>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ $greenhouse->name }}</strong></td>
+                        <td>{{ $greenhouse->plant_type }}</td>
+                        <td>{{ $greenhouse->created_at }}</td>
+                        <td>{{ $greenhouse->updated_at }}</td>
                         <td>
-                            <button type="button" class="btn btn-outline-primary active">
-                                <i class="tf-icons bx bx-pin"></i>
-                            </button>
+                            <form action="{{ route('greenhouse-pin', $greenhouse->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                @if($greenhouse->pin_status == 1)
+                                    <input type="hidden" name="pin_status" id="pin_status" value="0" required>
+                                    <button type="submit" class="btn btn-outline-primary active">
+                                @else
+                                    <input type="hidden" name="pin_status" id="pin_status" value="1" required>
+                                    <button type="submit" class="btn btn-outline-primary">
+                                @endif
+                                    <i class="tf-icons bx bx-pin"></i>
+                                </button>
+                            </form>
                         </td>
                         <td>
                           <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
+                                <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
                             <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle"
+                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle{{ $greenhouse->id }}"
                                 ><i class="bx bx-info-circle me-1"></i> More Info</a
                               >
-                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#smallModal"
+                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#smallModal{{ $greenhouse->id }}"
                                 ><i class="bx bx-trash me-1"></i> Delete</a
                               >
-                              <a class="dropdown-item" href="javascript:void(0);"
+                              <a class="dropdown-item" href="{{ route('greenhouse-export', $greenhouse->id) }}"
                                 ><i class="bx bx-download me-1"></i> Download Data</a
                               >
                             </div>
                           </div>
                         </td>
                       </tr>
+                    @endforeach
+                    @endif
                     </tbody>
                   </table>
                 </div>
@@ -310,36 +327,30 @@
                         aria-label="Close"
                       ></button>
                     </div>
+                    <form action="{{ route('greenhouse-manage') }}" method="POST">
+                    @csrf
                     <div class="modal-body">
                       <div class="row">
                         <div class="col mb-3">
-                          <label for="nameWithTitle" class="form-label">Name</label>
+                          <label for="name" class="form-label">Name</label>
                           <input
                             type="text"
-                            id="nameWithTitle"
-                            class="form-control"
-                            placeholder="Enter Name"
+                            id="name"
+                            name="name"
+                            class="form-control @error('name') is-invalid @enderror"
+                            placeholder="Enter Greenhouse Name"
+                            required
                           />
                         </div>
                       </div>
-                      <div class="row g-2">
-                        <div class="col mb-0">
-                          <label for="emailWithTitle" class="form-label">Email</label>
-                          <input
-                            type="text"
-                            id="emailWithTitle"
-                            class="form-control"
-                            placeholder="xxxx@xxx.xx"
-                          />
-                        </div>
-                        <div class="col mb-0">
-                          <label for="dobWithTitle" class="form-label">DOB</label>
-                          <input
-                            type="text"
-                            id="dobWithTitle"
-                            class="form-control"
-                            placeholder="DD / MM / YY"
-                          />
+                      <div class="row">
+                        <div class="col mb-3">
+                            <label for="plant_type" class="form-label">Plant_Type</label>
+                            <select class="form-select" id="plant_type" name="plant_type" aria-label="Select Plant Type" required>
+                            @foreach ($plant_lists as $plant_list)
+                                <option value={{ $plant_list->plant_name }}>{{ $plant_list->plant_name }} ({{ $plant_list->latin_name }})</option>
+                            @endforeach
+                            </select>
                         </div>
                       </div>
                     </div>
@@ -347,16 +358,19 @@
                       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         Close
                       </button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
+                    </form>
                   </div>
                 </div>
               </div>
+              @if(isset($greenhouses))
+              @foreach ($greenhouses as $greenhouse)
                 <!-- Modal 1-->
                 <div
                     class="modal fade"
-                    id="modalToggle"
-                    aria-labelledby="modalToggleLabel"
+                    id="modalToggle{{ $greenhouse->id }}"
+                    aria-labelledby="modalToggleLabel{{ $greenhouse->id }}"
                     tabindex="-1"
                     style="display: none"
                     aria-hidden="true"
@@ -364,7 +378,7 @@
                     <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="modalToggleLabel">GreenHouse 1</h5>
+                        <h5 class="modal-title" id="modalToggleLabel{{ $greenhouse->id }}">{{ $greenhouse->name }}</h5>
                         <button
                             type="button"
                             class="btn-close"
@@ -374,8 +388,11 @@
                         </div>
                         <div class="modal-body">
                          <ol class="list-group list-group-numbered">
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Plant Type : </strong> Carrot</li>
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Planting Date : </strong> 24-08-2024</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Temperature Threshold : </strong> {{ $greenhouse->temperature }}&deg;C</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Humidity Threshold : </strong> {{ $greenhouse->humidity }}%</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Nutrition Threshold : </strong> {{ $greenhouse->nutrition }}ppm</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Light Threshold : </strong> {{ $greenhouse->light }}lux</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Level Threshold : </strong> max: {{ $greenhouse->water_f }}cm min: {{ $greenhouse->water_e }}cm</li>
                          </ol>
                         </div>
                         <div class="modal-footer">
@@ -384,7 +401,7 @@
                         </button>
                         <button
                             class="btn btn-primary"
-                            data-bs-target="#modalToggle2"
+                            data-bs-target="#modalToggle{{ $greenhouse->id }}_edit"
                             data-bs-toggle="modal"
                             data-bs-dismiss="modal"
                         >
@@ -397,15 +414,15 @@
                 <!-- Modal 2-->
                 <div
                     class="modal fade"
-                    id="modalToggle2"
+                    id="modalToggle{{ $greenhouse->id }}_edit"
                     aria-hidden="true"
-                    aria-labelledby="modalToggleLabel2"
+                    aria-labelledby="modalToggleLabel{{ $greenhouse->id }}_edit"
                     tabindex="-1"
                 >
                     <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="modalToggleLabel2">Edit Data GreenHouse 1</h5>
+                        <h5 class="modal-title" id="modalToggleLabel{{ $greenhouse->id }}_edit">Edit Data {{ $greenhouse->name }}</h5>
                         <button
                             type="button"
                             class="btn-close"
@@ -413,40 +430,75 @@
                             aria-label="Close"
                         ></button>
                         </div>
+                        <form action="{{ route('greenhouse-update', $greenhouse->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
                         <div class="modal-body">
                             <div class="row">
                               <div class="col mb-3">
-                                <label for="nameBasic" class="form-label">Name</label>
-                                <input type="text" id="nameBasic" class="form-control" placeholder="Enter Name" />
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $greenhouse->name }}" />
                               </div>
                             </div>
-                            <div class="row g-2">
-                              <div class="col mb-0">
-                                <label for="emailBasic" class="form-label">Email</label>
-                                <input type="text" id="emailBasic" class="form-control" placeholder="xxxx@xxx.xx" />
-                              </div>
-                              <div class="col mb-0">
-                                <label for="dobBasic" class="form-label">DOB</label>
-                                <input type="text" id="dobBasic" class="form-control" placeholder="DD / MM / YY" />
-                              </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                  <label for="plant_type" class="form-label">Plant Type</label>
+                                  <input type="text" id="plant_type" name="plant_type" class="form-control class="form-control @error('plant_type') is-invalid @enderror" value="{{ $greenhouse->plant_type }}" />
+                                </div>
                             </div>
-                          </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                  <label for="temperature" class="form-label">Temperature</label>
+                                  <input type="number" id="temperature" name="temperature" class="form-control class="form-control @error('temperature') is-invalid @enderror" value="{{ $greenhouse->temperature }}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                  <label for="humidity" class="form-label">Humidity</label>
+                                  <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $greenhouse->humidity }}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                  <label for="nutrition" class="form-label">Nutrition</label>
+                                  <input type="number" id="nutrition" name="nutrition" class="form-control class="form-control @error('nutrition') is-invalid @enderror" value="{{ $greenhouse->nutrition }}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                  <label for="light" class="form-label">Light</label>
+                                  <input type="number" id="light" name="light" class="form-control class="form-control @error('light') is-invalid @enderror" value="{{ $greenhouse->light }}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                  <label for="water_f" class="form-label">Water Level Full</label>
+                                  <input type="number" id="water_f" name="water_f" class="form-control class="form-control @error('water_f') is-invalid @enderror" value="{{ $greenhouse->water_f }}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-3">
+                                  <label for="water_e" class="form-label">Water Full Emergency</label>
+                                  <input type="number" id="water_e" name="water_e" class="form-control class="form-control @error('water_e') is-invalid @enderror" value="{{ $greenhouse->water_e }}" />
+                                </div>
+                            </div>
                         <div class="modal-footer">
                         <button
                             class="btn btn-outline-secondary"
-                            data-bs-target="#modalToggle"
+                            data-bs-target="#modalToggle{{ $greenhouse->id }}"
                             data-bs-toggle="modal"
                             data-bs-dismiss="modal"
                         >
                             Back
                         </button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
+                    </form>
                     </div>
                     </div>
                 </div>
                 {{-- Delete Alert Modal --}}
-                <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
+                <div class="modal fade" id="smallModal{{ $greenhouse->id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-sm" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -465,12 +517,17 @@
                           <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
                             Close
                           </button>
-                          <button type="button" class="btn btn-danger">Delete</button>
+                          <form action="{{ route('greenhouse-destroy', $greenhouse->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                          </form>
                         </div>
                       </div>
                     </div>
-                  </div>
-
+                </div>
+                @endforeach
+                @endif
             </div>
             <!-- / Content -->
 

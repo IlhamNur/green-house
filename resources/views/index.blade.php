@@ -241,7 +241,7 @@
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row">
-                @if (isset($greenhouse))
+                @if (isset($sensorDatas[0]))
                     <div class="col-lg-8 mb-4 order-0">
                 @else
                     <div class="col-lg mb-4 order-0">
@@ -253,9 +253,13 @@
                           <h5 class="card-title text-primary">Welcome {{ Auth::user()->name }}! 🎉</h5>
                           <p class="mb-4">
                             @if (isset($greenhouse))
-                                This is your <span class="fw-bold">{{ $greenhouse->name }}</span> dashboard monitoring. Change the greenhouse data you want to display by clicking the button below.
+                                This is your <span class="fw-bold">{{ $greenhouse->name }}</span> dashboard monitoring.
+                                @if (!isset($sensorDatas[0]))
+                                    This greenhouse has no data.
+                                @endif
+                                    Change the greenhouse data you want to display by clicking the button below.
                             @else
-                                No <span class="fw-bold">Greenhouse Data</span> added. Add the greenhouse data you want to display by clicking the button below.
+                                No <span class="fw-bold">Greenhouse Data</span> pinned. Pin the greenhouse data you want to display by clicking the button below.
                             @endif
                           </p>
 
@@ -276,7 +280,7 @@
                     </div>
                   </div>
                 </div>
-                @if (isset($greenhouse))
+                @if (isset($sensorDatas[0]))
                     <div class="col-lg-4 col-md-4 order-1">
                     <div class="row">
                         <div class="col-lg-6 col-md-12 col-6 mb-4">
@@ -395,7 +399,7 @@
                                     <small class="text-success text-nowrap fw-semibold"
                                     ><i class="bx bx-chevron-up"></i> {{ $sensorDatas[0]->water_level }}cm</small
                                     >
-                                    <h3 class="mb-0">{{ ($sensorDatas[0]->water_level) - ($sensorDatas[1]->water_level) }}%</h3>
+                                    <h3 class="mb-0">{{ ($sensorDatas[0]->water_level) - ($sensorDatas[1]->water_level) }} cm</h3>
                                 </div>
                                 </div>
                                 <div id="waterLevelChart"></div>
@@ -452,7 +456,7 @@
 
     <!-- Main JS -->
     <!-- Pass PHP data to JavaScript using inline script -->
-    @if (isset($greenhouse))
+    @if (isset($sensorDatas[0]))
         @php
             $lights = [];
             $waters = [];

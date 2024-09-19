@@ -393,6 +393,7 @@
       },
       series: [
         {
+          name: 'Water Level',
           data: waters
         }
       ],

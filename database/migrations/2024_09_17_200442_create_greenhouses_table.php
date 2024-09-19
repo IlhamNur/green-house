@@ -20,7 +20,6 @@ return new class extends Migration
             $table->integer('humidity');
             $table->integer('nutrition');
             $table->integer('light');
-            $table->integer('ph');
             $table->integer('water_f');
             $table->integer('water_e');
             $table->integer('pin_status');

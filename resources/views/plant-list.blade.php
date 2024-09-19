@@ -195,7 +195,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="assets/img/avatars/farmer.png" alt class="w-px-40 h-auto rounded-circle" />
+                      <img style="height: 225px; width: 225px" src="assets/img/avatars/farmer.png" alt class="w-px-40 h-auto rounded-circle" />
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -256,27 +256,30 @@
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
+                    @foreach ($plant_lists as $plant_list)
                       <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger"></i> <strong>GreenHouse 1</strong></td>
-                        <td>Carrot</td>
-                        <td>Carrot</td>
+                        <td><i class="fab fa-angular fa-lg text-danger"></i> <strong>{{ $plant_list->plant_name }}</strong></td>
+                        <td> <img src="{{ $plant_list->picture }}" alt="{{ $plant_list->plant_name }}"> </td>
+                        <td>{{ $plant_list->latin_name }}</td>
                         <td>
                             <button type="button" class="btn btn-icon btn-outline-primary">
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle"
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle{{ $plant_list->id }}"
                                 ><span class="tf-icons bx bx-info-circle"></span></a>
                             </button>
                         </td>
                       </tr>
+                    @endforeach
                     </tbody>
                   </table>
                 </div>
               </div>
               <!--/ Basic Bootstrap Table -->
+              @foreach ($plant_lists as $plant_list)
                 <!-- Modal 1-->
                 <div
                     class="modal fade"
-                    id="modalToggle"
-                    aria-labelledby="modalToggleLabel"
+                    id="modalToggle{{ $plant_list->id }}"
+                    aria-labelledby="modalToggleLabel{{ $plant_list->id }}"
                     tabindex="-1"
                     style="display: none"
                     aria-hidden="true"
@@ -284,7 +287,7 @@
                     <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="modalToggleLabel">GreenHouse 1</h5>
+                        <h5 class="modal-title" id="modalToggleLabel{{ $plant_list->id }}">{{ $plant_list->plant_name }}</h5>
                         <button
                             type="button"
                             class="btn-close"
@@ -294,8 +297,12 @@
                         </div>
                         <div class="modal-body">
                          <ol class="list-group list-group-numbered">
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Plant Type : </strong> Carrot</li>
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Planting Date : </strong> 24-08-2024</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Temperature Threshold : </strong> {{ $plant_list->temperature }}&deg;C</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Humidity Threshold : </strong> {{ $plant_list->humidity }}%</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Nutrition Threshold : </strong> {{ $plant_list->nutrition }}ppm</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Light Threshold : </strong> {{ $plant_list->light }}lux</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Full Threshold : </strong> {{ $plant_list->water_f }}cm</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Emergency Threshold : </strong> {{ $plant_list->water_e }}cm</li>
                          </ol>
                         </div>
                         <div class="modal-footer">
@@ -306,32 +313,7 @@
                     </div>
                     </div>
                 </div>
-                {{-- Delete Alert Modal --}}
-                <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-sm" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel2">Delete Greenhouse</h5>
-                          <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          ></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are You Sure?</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
-                            Close
-                          </button>
-                          <button type="button" class="btn btn-danger">Delete</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
+                @endforeach
             </div>
             <!-- / Content -->
 

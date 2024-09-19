@@ -19,8 +19,11 @@ class HomeController extends Controller
         if ($greenhouse) {
             $greenhouseId = $greenhouse->id;
             $sensorDatas = SensorData::where('greenhouse_id', $greenhouseId)->latest()->take(7)->get();
+            if ($sensorDatas) {
+                return view('index', ['greenhouse' => $greenhouse, 'sensorDatas' => $sensorDatas]);
+            }
 
-            return view('index', ['greenhouse' => $greenhouse, 'sensorDatas' => $sensorDatas]);
+            return view('index', ['greenhouse' => $greenhouse]);
         }
 
         return view('index');
