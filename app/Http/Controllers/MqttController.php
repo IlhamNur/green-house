@@ -16,9 +16,10 @@ class MqttController extends Controller
 
         $query = 
         "
-                SELECT TJ.temperature, TJ.humidity, TJ.soil_max, TJ.soil_min, TJ.light_intensity 
+                SELECT TJ.temperature AS temperature, TJ.humidity AS humidity, TJ.soil_max AS soil_max, TJ.soil_min AS soil_min, TJ.light_intensity AS light_intensity
                 FROM list_greenhouses AS GH 
-                INNER JOIN tanamanjenis AS TJ ON GH.id_tanaman = TJ.id; 
+                INNER JOIN tanamanjenis AS TJ ON GH.id_tanaman = TJ.id
+                WHERE GH.id = 1 
         ";
 
         $result = DB::selectone($query);

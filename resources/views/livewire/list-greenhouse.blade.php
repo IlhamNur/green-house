@@ -17,6 +17,26 @@
                 <td>
                     <a href="{{ route('editGreenhouse', $datas->id) }}"><button type="button" class="btn btn-outline-primary">More Info</button></a>                    
                     <!-- <button type="button" class="btn btn-outline-secondary" wire:click="$emit('editGreenhouse', {{$datas->id}})">Edit</button> -->
+                    @if ($datas->pin_status == 0)
+                        <!-- Display the pin icon only if pin_status is 0 -->
+                        <form action="{{ route('pinGreenhouse', $datas->id) }}" method="post" style="display:inline;">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="bi bi-pin-fill"></i>
+                            </button>
+                        </form>
+                    @endif               
+                    @if ($datas->pin_status == 1)
+                        <!-- Display the pin icon only if pin_status is 0 -->
+                        <form action="{{ route('unpinGreenhouse', $datas->id) }}" method="post" style="display:inline;">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="bi bi-pin-angle"></i>
+                            </button>
+                        </form>
+                    @endif               
                     <form action="{{ route('destroyGreenhouse', $datas->id) }}" method="post" style="display:inline;">
                         @csrf
                         @method('DELETE')

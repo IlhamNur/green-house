@@ -20,7 +20,6 @@
         <div class="card-body">
         <div class="table-responsive">
         @livewire('list-greenhouse')
-        @livewire('edit-greenhouse-modal')
         </div>
         </div>
     </div>

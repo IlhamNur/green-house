@@ -20,6 +20,7 @@ class GreenhoseManage extends Seeder
             'name' => 'greenhouseku',
             'id_user' => 1,
             'id_tanaman' => 1,
+            'pin_status' => 1,
         ]);
 
         //
@@ -35,6 +36,7 @@ class GreenhoseManage extends Seeder
         //
         //
         DB::table('tanamanjenis')->insert([
+            'id_user' => 1,
             'name' => 'sawi',
             'temperature' => 20,
             'humidity' => 80,

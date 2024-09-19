@@ -30,7 +30,7 @@
         <input type="text" class="form-control" id="light_intensity" name="light_intensity">
     </div>
 
-    <button type="submit"  class="btn btn-primary">Add Greenhouse</button>
+    <button type="submit"  class="btn btn-primary">Add Plant Treshold</button>
 </form>
 
 

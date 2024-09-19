@@ -29,7 +29,7 @@ class ListGreenhouse extends Component
 
         // Fetch data from your database table
         $this->data = DB::select('
-            SELECT LG.id AS id, LG.name AS greenhouse, TJ.name AS tanaman
+            SELECT LG.id AS id, LG.name AS greenhouse, TJ.name AS tanaman, LG.pin_status AS pin_status
             FROM list_greenhouses AS LG
             INNER JOIN tanamanjenis AS TJ ON LG.id_tanaman = TJ.id
             WHERE LG.id_user = ?

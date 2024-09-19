@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('id_user');
             $table->string('name')->index();
             $table->unsignedInteger('id_tanaman')->nullable();
+            $table->boolean('pin_status')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });

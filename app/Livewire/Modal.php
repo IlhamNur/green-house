@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\list_greenhouse;
+use App\Models\List_Greenhouse;
 
 
 class Modal extends Component
@@ -15,7 +15,7 @@ class Modal extends Component
 
     public function modalListener($id)
     {
-        $this->greenhouse = list_greenhouse::find($id);
+        $this->greenhouse = List_Greenhouse::find($id);
         $this->name = $this->greenhouse->name;
         $this->dispatchBrowserEvent('show-modal');
     }

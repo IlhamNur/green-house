@@ -1,10 +1,31 @@
 @extends('layouts.default')
 
 @section('content')
+  
+@livewireStyles
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editGreenhouse">
-  Launch demo modal
-</button>
+@livewire('info-data', ['id' => $data->id])
+
+@livewireScripts
+
+<div class= "row">
+    <div class="row gx-5">
+        <div class="col">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editGreenhouse">
+                Edit Greenhouse
+            </button>
+        </div>
+        <div class="col">
+            <form action="{{ route('publishtreshGreenhouse', $data -> id) }}" method="post">
+                @CSRF
+                <button type="submit" class="btn btn-primary">
+                    Publish Plant treshold
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="modal fade" id="editGreenhouse" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

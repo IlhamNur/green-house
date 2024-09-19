@@ -17,12 +17,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/manage-greenhouse', [App\Http\Controllers\manageController::class, 'index'])->name('manageGreenhouse');
     
     Route::post('/store-manage-greenhouse', [App\Http\Controllers\manageController::class, 'store'])->name('storeGreenhouse');
+
+    Route::put('/pin-manage-greenhouse/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'pin'])->name('pinGreenhouse');
+ 
+    Route::put('/unpin-manage-greenhouse/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'unpin'])->name('unpinGreenhouse');
     
     Route::delete('/delete-manage-greenhouse/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'destroy'])->name('destroyGreenhouse');
     
     Route::put('/update-manage-greenhouse/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'update'])->name('updateGreenhouse');
     
     Route::get('/info-manage-greenhouse/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'edit'])->name('editGreenhouse');
+    
+    Route::get('/info-data-greenhouse/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'infodata'])->name('infodataGreenhouse');
+    
+    Route::post('/publish-treshold/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'publishtresh'])->name('publishtreshGreenhouse');
     
     //tanaman
     Route::get('/tanaman', [App\Http\Controllers\tanamanController::class, 'index'])->name('Tanaman');
