@@ -27,13 +27,4 @@ class HomeController extends Controller
 
         return view('index');
     }
-
-    public function getSensorData($greenhouseId)
-    {
-        // Retrieve the latest sensor data for the given greenhouse
-        $sensorData = SensorData::where('greenhouse_id', $greenhouseId)->latest()->first();
-
-        // Return the data in JSON format
-        return response()->json($sensorData);
-    }
 }
