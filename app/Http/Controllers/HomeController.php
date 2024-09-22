@@ -27,4 +27,17 @@ class HomeController extends Controller
 
         return view('index');
     }
+
+    public function getSensorData()
+    {
+        $userId = Auth::user()->id;
+        $greenhouse = Greenhouse::where('pin_status', '1')->where('user_id', $userId)->first();
+
+        if ($greenhouse) {
+            $sensorDatas = SensorData::where('greenhouse_id', $greenhouse->id)->latest()->take(7)->get();
+            return response()->json($sensorDatas);
+        }
+
+        return response()->json([]);
+    }
 }

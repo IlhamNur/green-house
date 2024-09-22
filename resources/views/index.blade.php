@@ -284,54 +284,50 @@
                     <div class="col-lg-4 col-md-4 order-1">
                     <div class="row">
                         <div class="col-lg-6 col-md-12 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                <img
-                                    src="assets/img/icons/unicons/temperature.png"
-                                    alt="temperature"
-                                    class="rounded"
-                                />
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <div class="avatar flex-shrink-0">
+                                            <img src="assets/img/icons/unicons/temperature.png" alt="temperature" class="rounded"/>
+                                        </div>
+                                    </div>
+                                    <span class="fw-semibold d-block mb-1">Temperature</span>
+                                    <h3 class="card-title mb-2 temperature">{{ $sensorDatas[0]->temperature }}&deg;C</h3>
+                                    <small class="temperature-diff">
+                                        @if ((($sensorDatas[0]->temperature) - ($sensorDatas[1]->temperature)) >= 0)
+                                            <small class="text-success fw-semibold">
+                                                <i class="bx bx-up-arrow-alt"></i>
+                                        @else
+                                            <small class="text-danger fw-semibold">
+                                                <i class="bx bx-down-arrow-alt"></i>
+                                        @endif
+                                        {{ ($sensorDatas[0]->temperature) - ($sensorDatas[1]->temperature) }}&deg;C</small>
+                                    </small>
                                 </div>
                             </div>
-                            <span class="fw-semibold d-block mb-1">Temperature</span>
-                            <h3 class="card-title mb-2 temperature">{{ $sensorDatas[0]->temperature }}&deg;C</h3>
-                            @if ((($sensorDatas[0]->temperature) - ($sensorDatas[1]->temperature)) >= 0)
-                                <small class="text-success fw-semibold">
-                                <i class="bx bx-up-arrow-alt"></i>
-                            @else
-                                <small class="text-danger fw-semibold">
-                                <i class="bx bx-down-arrow-alt"></i>
-                            @endif
-                                 {{ ($sensorDatas[0]->temperature) - ($sensorDatas[0]->temperature) }}&deg;C</small>
-                            </div>
-                        </div>
                         </div>
                         <div class="col-lg-6 col-md-12 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                <img
-                                    src="assets/img/icons/unicons/humidity.png"
-                                    alt="Credit Card"
-                                    class="rounded"
-                                />
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <div class="avatar flex-shrink-0">
+                                            <img src="assets/img/icons/unicons/humidity.png" alt="humidity" class="rounded"/>
+                                        </div>
+                                    </div>
+                                    <span>Humidity</span>
+                                    <h3 class="card-title text-nowrap mb-1 humidity">{{ $sensorDatas[0]->humidity }}%</h3>
+                                    <small class="humidity-diff">
+                                        @if ((($sensorDatas[0]->humidity) - ($sensorDatas[1]->humidity)) >= 0)
+                                            <small class="text-success fw-semibold">
+                                                <i class="bx bx-up-arrow-alt"></i>
+                                        @else
+                                            <small class="text-danger fw-semibold">
+                                                <i class="bx bx-down-arrow-alt"></i>
+                                        @endif
+                                        {{ ($sensorDatas[0]->humidity) - ($sensorDatas[1]->humidity) }}%</small>
+                                    </small>
                                 </div>
                             </div>
-                            <span>Humidity</span>
-                            <h3 class="card-title text-nowrap mb-1">{{ $sensorDatas[0]->humidity  }}%</h3>
-                            @if ((($sensorDatas[0]->humidity) - ($sensorDatas[1]->humidity)) >= 0)
-                                <small class="text-success fw-semibold">
-                                <i class="bx bx-up-arrow-alt"></i>
-                            @else
-                                <small class="text-danger fw-semibold">
-                                <i class="bx bx-down-arrow-alt"></i>
-                            @endif
-                             {{ ($sensorDatas[0]->humidity) - ($sensorDatas[1]->humidity) }}%</small>
-                            </div>
-                        </div>
                         </div>
                     </div>
                     </div>
@@ -371,79 +367,82 @@
                     <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
                     <div class="row">
                         <div class="col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                <img src="assets/img/icons/unicons/phosphorus.png" alt="Nutrition" class="rounded" />
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <div class="avatar flex-shrink-0">
+                                            <img src="assets/img/icons/unicons/phosphorus.png" alt="Nutrition" class="rounded" />
+                                        </div>
+                                    </div>
+                                    <span class="d-block mb-1">Nutrition</span>
+                                    <h3 class="card-title text-nowrap mb-2 nutrition">{{ $sensorDatas[0]->nutrition }}ppm</h3>
+                                    <small class="nutrition-diff">
+                                        @if ((($sensorDatas[0]->nutrition) - ($sensorDatas[1]->nutrition)) >= 0)
+                                            <small class="text-success fw-semibold">
+                                                <i class="bx bx-up-arrow-alt"></i>
+                                        @else
+                                            <small class="text-danger fw-semibold">
+                                                <i class="bx bx-down-arrow-alt"></i>
+                                        @endif
+                                        {{ ($sensorDatas[0]->nutrition) - ($sensorDatas[1]->nutrition) }}ppm</small>
+                                    </small>
                                 </div>
                             </div>
-                            <span class="d-block mb-1">Nutrition</span>
-                            <h3 class="card-title text-nowrap mb-2">{{ $sensorDatas[0]->nutrition }}ppm</h3>
-                            @if ((($sensorDatas[0]->nutrition) - ($sensorDatas[1]->nutrition)) >= 0)
-                                <small class="text-success fw-semibold">
-                                <i class="bx bx-up-arrow-alt"></i>
-                            @else
-                                <small class="text-danger fw-semibold">
-                                <i class="bx bx-down-arrow-alt"></i>
-                            @endif
-                            {{ ($sensorDatas[0]->nutrition) - ($sensorDatas[1]->nutrition) }}ppm</small>
-                            </div>
-                        </div>
                         </div>
                         <div class="col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                            <div class="card-title d-flex align-items-start justify-content-between">
-                                <div class="avatar flex-shrink-0">
-                                <img src="assets/img/icons/unicons/ph-balance.png" alt="pH" class="rounded" />
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <div class="avatar flex-shrink-0">
+                                            <img src="assets/img/icons/unicons/ph-balance.png" alt="pH" class="rounded"/>
+                                        </div>
+                                    </div>
+                                    <span class="fw-semibold d-block mb-1">pH</span>
+                                    <h3 class="card-title mb-2 ph-level">ph {{ $sensorDatas[0]->ph }}</h3>
+                                    <small class="ph-diff">
+                                        @if ((($sensorDatas[0]->ph) - ($sensorDatas[1]->ph)) >= 0)
+                                            <small class="text-success fw-semibold">
+                                                <i class="bx bx-up-arrow-alt"></i>
+                                        @else
+                                            <small class="text-danger fw-semibold">
+                                                <i class="bx bx-down-arrow-alt"></i>
+                                        @endif
+                                        {{ ($sensorDatas[0]->ph) - ($sensorDatas[1]->ph) }}ph</small>
+                                    </small>
                                 </div>
                             </div>
-                            <span class="fw-semibold d-block mb-1">pH</span>
-                            <h3 class="card-title mb-2">ph {{ $sensorDatas[0]->ph }}</h3>
-                            @if ((($sensorDatas[0]->ph) - ($sensorDatas[1]->ph)) >= 0)
-                                <small class="text-success fw-semibold">
-                                <i class="bx bx-up-arrow-alt"></i>
-                            @else
-                                <small class="text-danger fw-semibold">
-                                <i class="bx bx-down-arrow-alt"></i>
-                            @endif
-                            </i>ph {{ ($sensorDatas[0]->ph) - ($sensorDatas[1]->ph) }}ph</small>
-                            </div>
-                        </div>
                         </div>
                         </div>
                         <div class="row">
-                        <div class="col-12 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                            <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
-                                <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
-                                <div class="card-title">
-                                    <h5 class="text-nowrap mb-2">Water Level</h5>
-                                    <span class="badge bg-label-warning rounded-pill">distance from lid to water</span>
+                            <div class="col-12 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                                                <div class="card-title">
+                                                    <h5 class="text-nowrap mb-2">Water Level</h5>
+                                                    <span class="badge bg-label-warning rounded-pill">distance from lid to water</span>
+                                                </div>
+                                                <div class="mt-sm-auto">
+                                                    <small class="water-level-diff">
+                                                        @if ((($sensorDatas[0]->water_level) - ($sensorDatas[1]->water_level)) >= 0)
+                                                            <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i>
+                                                        @else
+                                                            <small class="text-danger text-nowrap fw-semibold"><i class="bx bx-chevron-down"></i>
+                                                        @endif
+                                                        {{ ($sensorDatas[0]->water_level) - ($sensorDatas[1]->water_level) }}cm</small>
+                                                    </small>
+                                                    <h3 class="water-level mb-0">{{ $sensorDatas[0]->water_level }}cm</h3>
+                                                </div>
+                                            </div>
+                                            <div id="waterLevelChart"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="mt-sm-auto">
-                                    @if ((($sensorDatas[0]->water_level) - ($sensorDatas[1]->water_level)) >= 0)
-                                        <small class="text-success text-nowrap fw-semibold"
-                                        ><i class="bx bx-chevron-up"></i>
-                                    @else
-                                        <small class="text-danger text-nowrap fw-semibold"
-                                        ><i class="bx bx-chevron-down"></i>
-                                    @endif
-                                    {{ ($sensorDatas[0]->water_level) - ($sensorDatas[1]->water_level) }}cm</small
-                                    >
-                                    <h3 class="mb-0">{{ $sensorDatas[0]->water_level }}cm</h3>
-                                </div>
-                                </div>
-                                <div id="waterLevelChart"></div>
-                            </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
-                @endif
                 </div>
+                @endif
               </div>
             </div>
             <!-- / Content -->
@@ -513,5 +512,79 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>
+        // Function to fetch sensor data via AJAX
+        function fetchSensorData() {
+            $.ajax({
+                url: "{{ route('getSensorData') }}", // Replace with your route to fetch sensor data
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.length > 0) {
+                        let sensorData = response[0]; // Latest sensor data
+
+                        // Update temperature
+                        $('.temperature').text(sensorData.temperature + '°C');
+                        if ((sensorData.temperature - response[1].temperature) >= 0) {
+                            $('.temperature-diff').html(`<small class="text-success fw-semibold">
+                                <i class="bx bx-up-arrow-alt"></i> ${sensorData.temperature - response[1].temperature}°C</small>`);
+                        } else {
+                            $('.temperature-diff').html(`<small class="text-danger fw-semibold">
+                                <i class="bx bx-down-arrow-alt"></i> ${sensorData.temperature - response[1].temperature}°C</small>`);
+                        }
+
+                        // Update humidity
+                        $('.humidity').text(sensorData.humidity + '%');
+                        if ((sensorData.humidity - response[1].humidity) >= 0) {
+                            $('.humidity-diff').html(`<small class="text-success fw-semibold">
+                                <i class="bx bx-up-arrow-alt"></i> ${sensorData.humidity - response[1].humidity}%</small>`);
+                        } else {
+                            $('.humidity-diff').html(`<small class="text-danger fw-semibold">
+                                <i class="bx bx-down-arrow-alt"></i> ${sensorData.humidity - response[1].humidity}%</small>`);
+                        }
+
+                        // Update nutrition
+                        $('.nutrition').text(sensorData.nutrition + 'ppm');
+                        if ((sensorData.nutrition - response[1].nutrition) >= 0) {
+                            $('.nutrition-diff').html(`<small class="text-success fw-semibold">
+                                <i class="bx bx-up-arrow-alt"></i> ${sensorData.nutrition - response[1].nutrition}ppm</small>`);
+                        } else {
+                            $('.nutrition-diff').html(`<small class="text-danger fw-semibold">
+                                <i class="bx bx-down-arrow-alt"></i> ${sensorData.nutrition - response[1].nutrition}ppm</small>`);
+                        }
+
+                        // Update water level
+                        $('.water-level').text(sensorData.water_level + 'cm');
+                        if ((sensorData.water_level - response[1].water_level) >= 0) {
+                            $('.water-level-diff').html(`<small class="text-success fw-semibold">
+                                <i class="bx bx-up-arrow-alt"></i> ${sensorData.water_level - response[1].water_level}cm</small>`);
+                        } else {
+                            $('.water-level-diff').html(`<small class="text-danger fw-semibold">
+                                <i class="bx bx-down-arrow-alt"></i> ${sensorData.water_level - response[1].water_level}cm</small>`);
+                        }
+
+                        // Update pH
+                        $('.ph-level').text('ph ' + sensorData.ph);
+                        if ((sensorData.ph - response[1].ph) >= 0) {
+                            $('.ph-diff').html(`<small class="text-success fw-semibold">
+                                <i class="bx bx-up-arrow-alt"></i> ${sensorData.ph - response[1].ph}</small>`);
+                        } else {
+                            $('.ph-diff').html(`<small class="text-danger fw-semibold">
+                                <i class="bx bx-down-arrow-alt"></i> ${sensorData.ph - response[1].ph}</small>`);
+                        }
+                    }
+                },
+                error: function(xhr) {
+                    console.log('Error fetching sensor data:', xhr);
+                }
+            });
+        }
+
+        // Call the fetchSensorData function every 5 seconds
+        $(document).ready(function() {
+            setInterval(fetchSensorData, 5000);
+        });
+    </script>
   </body>
 </html>
