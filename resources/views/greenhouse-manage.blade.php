@@ -253,7 +253,7 @@
                     </button>
                   </div>
                 <div class="table-responsive text-nowrap">
-                  <table class="table">
+                  <table class="table table-striped">
                     <thead>
                       <tr>
                         <th>GreenHouse Name</th>
@@ -375,40 +375,40 @@
                     style="display: none"
                     aria-hidden="true"
                 >
-                    <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="modalToggleLabel{{ $greenhouse->id }}">{{ $greenhouse->name }}</h5>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                        ></button>
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalToggleLabel{{ $greenhouse->id }}">{{ $greenhouse->name }}</h5>
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                            <div class="modal-body">
+                                <ol class="list-group list-group-numbered">
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Temperature Threshold : </strong> {{ $greenhouse->temperature }}&deg;C</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Humidity Threshold : </strong> {{ $greenhouse->humidity }}%</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Nutrition Threshold : </strong> {{ $greenhouse->nutrition }}ppm</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Light Threshold : </strong> {{ $greenhouse->light }}lux</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Level Threshold : </strong> max: {{ $greenhouse->water_f }}cm min: {{ $greenhouse->water_e }}cm</li>
+                                </ol>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <button
+                                    class="btn btn-primary"
+                                    data-bs-target="#modalToggle{{ $greenhouse->id }}_edit"
+                                    data-bs-toggle="modal"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Edit
+                                </button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                         <ol class="list-group list-group-numbered">
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Temperature Threshold : </strong> {{ $greenhouse->temperature }}&deg;C</li>
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Humidity Threshold : </strong> {{ $greenhouse->humidity }}%</li>
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Nutrition Threshold : </strong> {{ $greenhouse->nutrition }}ppm</li>
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Light Threshold : </strong> {{ $greenhouse->light }}lux</li>
-                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Level Threshold : </strong> max: {{ $greenhouse->water_f }}cm min: {{ $greenhouse->water_e }}cm</li>
-                         </ol>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                        <button
-                            class="btn btn-primary"
-                            data-bs-target="#modalToggle{{ $greenhouse->id }}_edit"
-                            data-bs-toggle="modal"
-                            data-bs-dismiss="modal"
-                        >
-                            Edit
-                        </button>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 <!-- Modal 2-->
@@ -437,51 +437,52 @@
                             <div class="row">
                               <div class="col mb-3">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" id="name" name="name" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $greenhouse->name }}" />
+                                <input type="text" id="name" name="name" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $greenhouse->name }}" required/>
                               </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="plant_type" class="form-label">Plant Type</label>
-                                  <input type="text" id="plant_type" name="plant_type" class="form-control class="form-control @error('plant_type') is-invalid @enderror" value="{{ $greenhouse->plant_type }}" />
+                                  <input type="text" id="plant_type" name="plant_type" class="form-control class="form-control @error('plant_type') is-invalid @enderror" value="{{ $greenhouse->plant_type }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="temperature" class="form-label">Temperature</label>
-                                  <input type="number" id="temperature" name="temperature" class="form-control class="form-control @error('temperature') is-invalid @enderror" value="{{ $greenhouse->temperature }}" />
+                                  <input type="number" id="temperature" name="temperature" class="form-control class="form-control @error('temperature') is-invalid @enderror" value="{{ $greenhouse->temperature }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="humidity" class="form-label">Humidity</label>
-                                  <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $greenhouse->humidity }}" />
+                                  <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $greenhouse->humidity }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="nutrition" class="form-label">Nutrition</label>
-                                  <input type="number" id="nutrition" name="nutrition" class="form-control class="form-control @error('nutrition') is-invalid @enderror" value="{{ $greenhouse->nutrition }}" />
+                                  <input type="number" id="nutrition" name="nutrition" class="form-control class="form-control @error('nutrition') is-invalid @enderror" value="{{ $greenhouse->nutrition }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="light" class="form-label">Light</label>
-                                  <input type="number" id="light" name="light" class="form-control class="form-control @error('light') is-invalid @enderror" value="{{ $greenhouse->light }}" />
+                                  <input type="number" id="light" name="light" class="form-control class="form-control @error('light') is-invalid @enderror" value="{{ $greenhouse->light }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="water_f" class="form-label">Water Level Full</label>
-                                  <input type="number" id="water_f" name="water_f" class="form-control class="form-control @error('water_f') is-invalid @enderror" value="{{ $greenhouse->water_f }}" />
+                                  <input type="number" id="water_f" name="water_f" class="form-control class="form-control @error('water_f') is-invalid @enderror" value="{{ $greenhouse->water_f }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="water_e" class="form-label">Water Full Emergency</label>
-                                  <input type="number" id="water_e" name="water_e" class="form-control class="form-control @error('water_e') is-invalid @enderror" value="{{ $greenhouse->water_e }}" />
+                                  <input type="number" id="water_e" name="water_e" class="form-control class="form-control @error('water_e') is-invalid @enderror" value="{{ $greenhouse->water_e }}" required/>
                                 </div>
                             </div>
+                        </div>
                         <div class="modal-footer">
                         <button
                             class="btn btn-outline-secondary"
@@ -573,9 +574,6 @@
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
-
-    <!-- Page JS -->
-    <script src="assets/js/dashboards-analytics.js"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

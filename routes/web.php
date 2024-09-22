@@ -19,6 +19,7 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     // Protected routes
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/sensor-data/{greenhouseId}', [HomeController::class, 'getSensorData']);
     Route::get('/greenhouse-manage', [GreenhouseController::class, 'index'])->name('greenhouse-manage');
     Route::get('/plant-list', [PlantController::class, 'index'])->name('plant-list');
 

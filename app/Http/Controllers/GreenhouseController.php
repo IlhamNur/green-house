@@ -15,42 +15,10 @@ class GreenhouseController extends Controller
 {
     public function index()
     {
-        $greenhouses = Greenhouse::orderBy('pin_status', 'desc')->get();
+        $greenhouses = Greenhouse::where('user_id', Auth::user()->id)->orderBy('pin_status', 'desc')->get();
         $plant_lists = PlantList::all();
 
         return view('greenhouse-manage', ['greenhouses' => $greenhouses, 'plant_lists' => $plant_lists]);
-    }
-
-    public function publishData($ts, $tc, $ttds, $tka, $tpa, $tkl)
-    {
-        // Define MQTT server details
-        $mqttHost = '34.101.241.144';
-        $mqttPort = 1883; // Default MQTT port
-        $mqttClientId = 'laravel-publisher';
-
-        // Create an MQTT client instance
-        $mqtt = new MqttClient($mqttHost, $mqttPort, $mqttClientId);
-
-        // Connect to the MQTT broker
-        $mqtt->connect();
-
-        // Message payload (replace with dynamic data as needed)
-        $payload = json_encode([
-            'ts'   => $ts,
-            'tc'   => $tc,
-            'ttds' => $ttds,
-            'tka'  => $tka,
-            'tpa'  => $tpa,
-            'tkl'  => $tkl
-        ]);
-
-        // Publish the message to the topic
-        $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
-
-        // Disconnect the client after publishing
-        $mqtt->disconnect();
-
-        return response()->json(['status' => 'Message published successfully!', 'payload' => $payload]);
     }
 
     public function store(Request $request)
@@ -74,7 +42,9 @@ class GreenhouseController extends Controller
         $data['water_e'] = strval($plant_threshold->water_e);
         $data['pin_status'] = strval(0);
 
-        Greenhouse::create($data);
+        $insertData = Greenhouse::create($data);
+        $lastId = $insertData->id;
+
 
         // Define MQTT server details
         $mqttHost = '34.101.241.144';
@@ -99,6 +69,7 @@ class GreenhouseController extends Controller
 
         // Publish the message to the topic
         $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
+        // $mqtt->publish('mqtt/datasub' + strval($lastId), $payload, 0); // QoS level 0
 
         // Disconnect the client after publishing
         $mqtt->disconnect();
@@ -165,6 +136,8 @@ class GreenhouseController extends Controller
 
         // Publish the message to the topic
         $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
+        // $mqtt->publish('mqtt/datasub' + strval($id), $payload, 0); // QoS level 0
+
 
         // Disconnect the client after publishing
         $mqtt->disconnect();

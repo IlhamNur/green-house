@@ -246,7 +246,7 @@
                     <h5 class="mb-0">Plant List</h5>
                   </div>
                 <div class="table-responsive text-nowrap">
-                  <table class="table">
+                  <table class="table table-striped"">
                     <thead>
                       <tr>
                         <th>Plant Name</th>
@@ -359,9 +359,6 @@
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
-
-    <!-- Page JS -->
-    <script src="assets/js/dashboards-analytics.js"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
