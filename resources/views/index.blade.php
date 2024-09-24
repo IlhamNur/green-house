@@ -1006,17 +1006,17 @@
                         }
 
                         if (sensorData.light !== undefined && totalLightChart) {
-                            totalLightChart.updateSeries([[
+                            totalLightChart.updateSeries([{
                                 name: 'Sensor BH1750',
                                 data: [response[0].light, response[1].light, response[2].light, response[3].light, response[4].light, response[5].light, response[6].light]
-                            ]])
+                            }])
                         }
 
                         if (sensorData.water_level !== undefined && waterLevelChart) {
-                            waterLevelChart.updateSeries([[
+                            waterLevelChart.updateSeries([{
                                 name: 'Water Level',
                                 data: [response[0].water_level, response[1].water_level, response[2].water_level, response[3].water_level, response[4].water_level, response[5].water_level, response[6].water_level]
-                            ]])
+                            }])
                         }
 
                     }
