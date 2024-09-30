@@ -32,7 +32,7 @@
         <input type="text" class="form-control" id="light_intensity" name="light_intensity" value="{{ $data->light_intensity }}">
     </div>
 
-    <button type="submit" class="btn btn-primary btn-block">Update Plant</button>
+    <button type="submit" class="btn btn-primary btn-block">Update Plant Threshold</button>
 </form>
 <br>
 <form action="{{ route('destroyTanaman', $data->id) }}" method="post">

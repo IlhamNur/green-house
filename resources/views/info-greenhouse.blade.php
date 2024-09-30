@@ -8,21 +8,22 @@
 
 @livewireScripts
 
-<div class= "row">
-    <div class="row gx-5">
-        <div class="col">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editGreenhouse">
-                Edit Greenhouse
+<div class="row" id="rotateDiv">
+    <div class= "col-2">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editGreenhouse">
+            Edit Greenhouse
+        </button>
+    </div>
+    <div class="col">
+        <form action="{{ route('publishtreshGreenhouse', $data -> id) }}" method="post">
+            @CSRF
+            <button type="submit" class="btn btn-primary">
+                Publish Plant Treshold
             </button>
-        </div>
-        <div class="col">
-            <form action="{{ route('publishtreshGreenhouse', $data -> id) }}" method="post">
-                @CSRF
-                <button type="submit" class="btn btn-primary">
-                    Publish Plant treshold
-                </button>
-            </form>
-        </div>
+        </form>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-primary" id="rotateBtn">rotate</button>
     </div>
 </div>
 
@@ -70,6 +71,41 @@
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        let angle = 0;
+        let interval;
+
+        $('#rotateBtn').on('click', function() {
+            // Stop any previous rotations
+            clearInterval(interval);
+            
+            // Start continuous rotation every 100ms (adjust for smoother animation)
+            interval = setInterval(function() {
+                angle += 10; // Increase the angle by 10 degrees
+                $('#rotateDiv').css({
+                    'transform': 'rotate(' + angle + 'deg)',
+                    'transition': 'transform 0.1s linear'
+                });
+            }, 10); // Rotate every 100ms
+
+            // Stop rotation and reset position after 10 seconds
+            setTimeout(function() {
+                clearInterval(interval); // Stop rotation after 10s
+                angle = 0; // Reset angle to 0
+                $('#rotateDiv').css({
+                    'transform': 'rotate(0deg)',
+                    'transition': 'transform 0.5s ease' // Reset animation
+                });
+            }, 10000); // 10 seconds (10000 ms)
+        });
+    });
+</script>
+
+
 
 
 <script>

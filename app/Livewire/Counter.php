@@ -26,10 +26,10 @@ class Counter extends Component
     {
         // Fetch data from your database table
         $this->data = DB::select('
-            SELECT SD.temperature AS temperature, SD.humidity AS humidity, SD.ph, SD.soil_moisture AS soil_moisture, SD.light_intensity AS light_intensity, LG.pin_status AS pin_status, LG.name AS name
-            FROM sensor_data AS SD
-            INNER JOIN list_greenhouses AS LG ON SD.id_greenhouse = LG.id
-            WHERE pin_status = 1
+            SELECT LG.name, SD.temperature, SD.humidity, SD.ph, SD.soil_moisture, SD.light_intensity, LG.pin_status
+            FROM list_greenhouses AS LG
+            LEFT JOIN sensor_data AS SD ON SD.id_greenhouse = LG.id
+            WHERE LG.pin_status = 1
         ');
     }
 

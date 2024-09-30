@@ -40,7 +40,7 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Plant Treshold</span>
+            <span>Plant Threshold</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar">
@@ -49,7 +49,7 @@
                 @foreach ($tanaman as $datas)
                 <a class="collapse-item" href="{{ route('editTanaman', $datas->id) }}">{{$datas -> name}}</a>
                 @endforeach
-                <a class="collapse-item" href="/tanaman">Tambah Tanaman</a>
+                <a class="collapse-item" href="/tanaman">Add Plant Threshold</a>
             </div>
         </div>
     </li>
