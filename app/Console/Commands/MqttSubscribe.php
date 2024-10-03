@@ -33,7 +33,7 @@ class MqttSubscribe extends Command
 
     public function handle()
     {
-        $mqtt = new MqttClient('34.101.241.144', 1883, 'laravel-client');
+        $mqtt = new MqttClient('34.101.88.45', 1883, 'laravel-client');
 
         $mqtt->connect();
 

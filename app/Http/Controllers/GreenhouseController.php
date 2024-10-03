@@ -47,7 +47,7 @@ class GreenhouseController extends Controller
 
 
         // Define MQTT server details
-        $mqttHost = '34.101.241.144';
+        $mqttHost = '34.101.88.45';
         $mqttPort = 1883; // Default MQTT port
         $mqttClientId = 'laravel-publisher';
 
@@ -68,8 +68,8 @@ class GreenhouseController extends Controller
         ]);
 
         // Publish the message to the topic
-        $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
-        // $mqtt->publish('mqtt/datasub' + strval($lastId), $payload, 0); // QoS level 0
+        // $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
+        $mqtt->publish('mqtt/datasub' + strval($lastId), $payload, 0); // QoS level 0
 
         // Disconnect the client after publishing
         $mqtt->disconnect();
@@ -114,7 +114,7 @@ class GreenhouseController extends Controller
         Greenhouse::where('id', $id)->update($data);
 
         // Define MQTT server details
-        $mqttHost = '34.101.241.144';
+        $mqttHost = '34.101.88.45';
         $mqttPort = 1883; // Default MQTT port
         $mqttClientId = 'laravel-publisher';
 
@@ -135,8 +135,8 @@ class GreenhouseController extends Controller
         ]);
 
         // Publish the message to the topic
-        $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
-        // $mqtt->publish('mqtt/datasub' + strval($id), $payload, 0); // QoS level 0
+        // $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
+        $mqtt->publish('mqtt/datasub' + strval($id), $payload, 0); // QoS level 0
 
 
         // Disconnect the client after publishing
