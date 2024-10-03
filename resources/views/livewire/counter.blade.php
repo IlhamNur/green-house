@@ -1,10 +1,10 @@
 <div wire:poll.2s="fetchData">
     @if($data)
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold">{{$suhuling->name}}</h6>
+        </div>
         @foreach ($data as $suhuling)
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold">{{$suhuling->name}}</h6>
-                </div>
                 <div class="card-body">
                     <div class="row">
                         <!-- Suhu Lingkungan Card -->
@@ -57,7 +57,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Kelembaban Lingkungan</div>
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">PH</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">@if (is_null ($suhuling->ph)) 
                                                 --
                                                 @else
@@ -65,7 +65,7 @@
                                                 @endif</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="bi bi-droplet-half fa-2x text-gray-300"></i>
+                                            <i class="bi bi-thermometer fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Kelembaban Lingkungan</div>
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Kelembaban Tanah</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">@if (is_null ($suhuling->soil_moisture)) 
                                                 --
                                                 @else
@@ -86,7 +86,7 @@
                                                 @endif</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="bi bi-droplet-half fa-2x text-gray-300"></i>
+                                            <i class="bi bi-water fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -99,7 +99,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Kelembaban Lingkungan</div>
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Intensitas Cahaya</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">@if (is_null ($suhuling->light_intensity)) 
                                                 --
                                                 @else
@@ -107,7 +107,7 @@
                                                 @endif</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="bi bi-droplet-half fa-2x text-gray-300"></i>
+                                            <i class="bi bi-lightbulb-fill fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -115,10 +115,10 @@
                         </div>
 
                         <!-- Additional Cards... -->
+                        @endforeach
                     </div>
                 </div>
             </div>
-        @endforeach
     @else
         <div> data tidak ditemukan</div>
     @endif
