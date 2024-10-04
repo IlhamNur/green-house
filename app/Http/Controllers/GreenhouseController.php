@@ -69,7 +69,7 @@ class GreenhouseController extends Controller
 
         // Publish the message to the topic
         // $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
-        $mqtt->publish('mqtt/datasub' + strval($lastId), $payload, 0); // QoS level 0
+        $mqtt->publish('mqtt/datasub' . strval($lastId), $payload, 0); // QoS level 0
 
         // Disconnect the client after publishing
         $mqtt->disconnect();
@@ -136,7 +136,7 @@ class GreenhouseController extends Controller
 
         // Publish the message to the topic
         // $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
-        $mqtt->publish('mqtt/datasub' + strval($id), $payload, 0); // QoS level 0
+        $mqtt->publish('mqtt/datasub' . strval($id), $payload, 0); // QoS level 0
 
 
         // Disconnect the client after publishing
