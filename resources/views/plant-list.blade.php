@@ -195,7 +195,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img style="height: 225px; width: 225px" src="assets/img/avatars/farmer.png" alt class="w-px-40 h-auto rounded-circle" />
+                      <img src="assets/img/avatars/farmer.png" alt class="w-px-40 h-auto rounded-circle" />
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -259,7 +259,7 @@
                     @foreach ($plant_lists as $plant_list)
                       <tr>
                         <td><i class="fab fa-angular fa-lg text-danger"></i> <strong>{{ $plant_list->plant_name }}</strong></td>
-                        <td> <img src="{{ $plant_list->picture }}" alt="{{ $plant_list->plant_name }}"> </td>
+                        <td> <img style="height: 225px; width: 225px" src="{{ $plant_list->picture }}" alt="{{ $plant_list->plant_name }}"> </td>
                         <td>{{ $plant_list->latin_name }}</td>
                         <td>
                             <button type="button" class="btn btn-icon btn-outline-primary">
