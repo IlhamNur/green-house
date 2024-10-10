@@ -209,7 +209,11 @@
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">{{ Auth::user()->name }}</span>
-                            <small class="text-muted">Admin</small>
+                            @if(Auth::user()->role == 'user')
+                                <small class="text-muted">User</small>
+                            @else
+                                <small class="text-muted">Admin</small>
+                            @endif
                           </div>
                         </div>
                       </a>
@@ -782,10 +786,8 @@
                 }
             }
             };
-        if (typeof totalLightChartEl !== undefined && totalLightChartEl !== null) {
-            const totalLightChart = new ApexCharts(totalLightChartEl, totalLightChartOptions);
-            totalLightChart.render();
-        }
+        const totalLightChart = new ApexCharts(totalLightChartEl, totalLightChartOptions);
+        totalLightChart.render();
 
         // Light Chart - Radial Bar Chart
         // --------------------------------------------------------------------
@@ -866,10 +868,8 @@
                 }
             }
             };
-        if (typeof LightChartEl !== undefined && LightChartEl !== null) {
-            const LightChart = new ApexCharts(LightChartEl, LightChartOptions);
-            LightChart.render();
-        }
+        const LightChart = new ApexCharts(LightChartEl, LightChartOptions);
+        LightChart.render();
 
         // Water Level Line Chart
         // --------------------------------------------------------------------
@@ -930,10 +930,8 @@
                 show: false
             }
             };
-        if (typeof waterLevelChartEl !== undefined && waterLevelChartEl !== null) {
-            const waterLevelChart = new ApexCharts(waterLevelChartEl, waterLevelChartConfig);
-            waterLevelChart.render();
-        }
+        const waterLevelChart = new ApexCharts(waterLevelChartEl, waterLevelChartConfig);
+        waterLevelChart.render();
     })();
     </script>
 

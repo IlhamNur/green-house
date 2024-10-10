@@ -135,8 +135,8 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">Adventure starts here 🚀</h4>
-              <p class="mb-4">Optimize Your Green Space!</p>
+              <h4 class="mb-2">Grow Smarter 🚀</h4>
+              <p class="mb-4"> Start Your Automated Water Culture & Greenhouse Monitoring!</p>
 
               <form id="formAuthentication" class="mb-3" action="{{ route('register') }}" method="POST">
                 @csrf

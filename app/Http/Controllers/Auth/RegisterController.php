@@ -19,11 +19,9 @@ class RegisterController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        $user = $this->create($request->all());
+        $this->create($request->all());
 
-        auth()->login($user);
-
-        return redirect()->route('home');
+        return redirect()->route('login')->with(['success', 'Account registered successfully!']);
     }
 
     protected function validator(array $data)
@@ -41,6 +39,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => 'user',
         ]);
     }
 }

@@ -141,19 +141,28 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
+            @if(Auth::user()->role == 'user')
             <li class="menu-item">
               <a href="{{ route('home') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
+            @endif
 
             <!-- Layouts -->
             <li class="menu-item active">
+            @if(Auth::user()->role == 'user')
               <a href="{{ route('greenhouse-manage') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Greenhouse Manage</div>
               </a>
+            @else
+              <a href="{{ route('home') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+              </a>
+            @endif
             </li>
 
             <li class="menu-item">
@@ -209,7 +218,11 @@
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">{{ Auth::user()->name }}</span>
-                            <small class="text-muted">Admin</small>
+                            @if(Auth::user()->role == 'user')
+                                <small class="text-muted">User</small>
+                            @else
+                                <small class="text-muted">Admin</small>
+                            @endif
                           </div>
                         </div>
                       </a>
@@ -248,9 +261,11 @@
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">GreenHouse List</h5>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">
-                      <span class="tf-icons bx bx-plus-circle"></span>&nbsp; Add GreenHouse
-                    </button>
+                    @if(Auth::user()->role == 'user')
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">
+                            <span class="tf-icons bx bx-plus-circle"></span>&nbsp; Add GreenHouse
+                        </button>
+                    @endif
                   </div>
                 <div class="table-responsive text-nowrap">
                   <table class="table table-striped">
@@ -260,7 +275,11 @@
                         <th>Plant Type</th>
                         <th>Create Date</th>
                         <th>Update Date</th>
-                        <th>Pin</th>
+                        @if(Auth::user()->role == 'user')
+                            <th>Pin</th>
+                        @else
+                            <th>Owner</th>
+                        @endif
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -272,22 +291,30 @@
                         <td>{{ $greenhouse->plant_type }}</td>
                         <td>{{ $greenhouse->created_at }}</td>
                         <td>{{ $greenhouse->updated_at }}</td>
-                        <td>
-                            <form action="{{ route('greenhouse-pin', $greenhouse->id) }}" method="POST">
-                                @csrf
-                                @method('PUT')
+                        @if(Auth::user()->role == 'user')
+                            <td>
+                                <form action="{{ route('greenhouse-pin', $greenhouse->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
 
-                                @if($greenhouse->pin_status == 1)
-                                    <input type="hidden" name="pin_status" id="pin_status" value="0" required>
-                                    <button type="submit" class="btn btn-outline-primary active">
-                                @else
-                                    <input type="hidden" name="pin_status" id="pin_status" value="1" required>
-                                    <button type="submit" class="btn btn-outline-primary">
+                                    @if($greenhouse->pin_status == 1)
+                                        <input type="hidden" name="pin_status" id="pin_status" value="0" required>
+                                        <button type="submit" class="btn btn-outline-primary active">
+                                    @else
+                                        <input type="hidden" name="pin_status" id="pin_status" value="1" required>
+                                        <button type="submit" class="btn btn-outline-primary">
+                                    @endif
+                                        <i class="tf-icons bx bx-pin"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        @else
+                            @foreach ($users as $user)
+                                @if ($user->id == $greenhouse->user_id)
+                                    <td> {{ $user->name }} </td>
                                 @endif
-                                    <i class="tf-icons bx bx-pin"></i>
-                                </button>
-                            </form>
-                        </td>
+                            @endforeach
+                        @endif
                         <td>
                           <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -399,14 +426,16 @@
                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                     Close
                                 </button>
-                                <button
-                                    class="btn btn-primary"
-                                    data-bs-target="#modalToggle{{ $greenhouse->id }}_edit"
-                                    data-bs-toggle="modal"
-                                    data-bs-dismiss="modal"
-                                >
-                                    Edit
-                                </button>
+                                @if(Auth::user()->role == 'user')
+                                    <button
+                                        class="btn btn-primary"
+                                        data-bs-target="#modalToggle{{ $greenhouse->id }}_edit"
+                                        data-bs-toggle="modal"
+                                        data-bs-dismiss="modal"
+                                    >
+                                        Edit
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>

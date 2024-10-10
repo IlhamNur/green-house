@@ -15,7 +15,7 @@ class GreenhouseSeeder extends Seeder
     {
         DB::table('greenhouses')->insert([
             'name' => 'Greenhouse Sawi',
-            'user_id' => 1,
+            'user_id' => 2,
             'plant_type' => 'Sawi',
             'temperature' => 28,
             'humidity' => 80,

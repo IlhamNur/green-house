@@ -141,19 +141,28 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
+            @if(Auth::user()->role == 'user')
             <li class="menu-item">
               <a href="{{ route('home') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
+            @endif
 
             <!-- Layouts -->
             <li class="menu-item">
+            @if(Auth::user()->role == 'user')
               <a href="{{ route('greenhouse-manage') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Greenhouse Manage</div>
               </a>
+            @else
+              <a href="{{ route('home') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+              </a>
+            @endif
             </li>
 
             <li class="menu-item active">
@@ -209,7 +218,11 @@
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">{{ Auth::user()->name }}</span>
-                            <small class="text-muted">Admin</small>
+                            @if(Auth::user()->role == 'user')
+                                <small class="text-muted">User</small>
+                            @else
+                                <small class="text-muted">Admin</small>
+                            @endif
                           </div>
                         </div>
                       </a>
@@ -240,10 +253,18 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
+            @if (session('success'))
+                <div class="alert alert-success" role="alert">{{ session('success') }}</div>
+            @endif
               <!-- Basic Bootstrap Table -->
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Plant List</h5>
+                    @if(Auth::user()->role == 'superadmin')
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCenter">
+                            <span class="tf-icons bx bx-plus-circle"></span>&nbsp; Add Plant List
+                        </button>
+                    @endif
                   </div>
                 <div class="table-responsive text-nowrap">
                   <table class="table table-striped"">
@@ -259,14 +280,36 @@
                     @foreach ($plant_lists as $plant_list)
                       <tr>
                         <td><i class="fab fa-angular fa-lg text-danger"></i> <strong>{{ $plant_list->plant_name }}</strong></td>
-                        <td> <img style="height: 225px; width: 225px" src="{{ $plant_list->picture }}" alt="{{ $plant_list->plant_name }}"> </td>
+                        @if (Storage::disk('public')->exists($plant_list->picture))
+                            <td> <img style="height: 225px; width: 225px" src="{{ asset('storage/' . $plant_list->picture) }}" alt="{{ $plant_list->plant_name }}"> </td>
+                        @else
+                            <td> <img style="height: 225px; width: 225px" src="{{ $plant_list->picture }}" alt="{{ $plant_list->plant_name }}"> </td>
+                        @endif
                         <td>{{ $plant_list->latin_name }}</td>
-                        <td>
-                            <button type="button" class="btn btn-icon btn-outline-primary">
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle{{ $plant_list->id }}"
-                                ><span class="tf-icons bx bx-info-circle"></span></a>
-                            </button>
-                        </td>
+                        @if (Auth::user()->role == 'user')
+                            <td>
+                                <button type="button" class="btn btn-icon btn-outline-primary">
+                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle{{ $plant_list->id }}"
+                                    ><span class="tf-icons bx bx-info-circle"></span></a>
+                                </button>
+                            </td>
+                        @else
+                          <td>
+                            <div class="dropdown">
+                              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                              </button>
+                              <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle{{ $plant_list->id }}""
+                                  ><i class="bx bx-info-circle me-1"></i> More Info</a
+                                >
+                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#smallModal{{ $plant_list->id }}""
+                                  ><i class="bx bx-trash me-1"></i> Delete</a
+                                >
+                              </div>
+                            </div>
+                          </td>
+                        @endif
                       </tr>
                     @endforeach
                     </tbody>
@@ -313,9 +356,129 @@
                     </div>
                     </div>
                 </div>
+
+                {{-- Delete Alert Modal --}}
+                <div class="modal fade" id="smallModal{{ $plant_list->id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Delete Plant</h5>
+                            <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are You Sure?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                            Close
+                            </button>
+                            <form action="{{ route('plant-list-destroy', $plant_list->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
                 @endforeach
             </div>
             <!-- / Content -->
+
+            <div
+                class="modal fade"
+                id="modalCenter"
+                aria-hidden="true"
+                aria-labelledby="modalCenter"
+                tabindex="-1"
+            >
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="modalCenter">Add Plant List</h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                    </div>
+                    <form action="{{ route('plant-insert') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                        <div class="col mb-3">
+                            <label for="plant_name" class="form-label">Plant Name</label>
+                            <input type="text" id="plant_name" name="plant_name" class="form-control class="form-control @error('plant_name') is-invalid @enderror" required/>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="picture" class="form-label">Picture</label>
+                            <input type="file" id="picture" name="picture" class="form-control class="form-control @error('picture') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="latin_name" class="form-label">Latin Name</label>
+                            <input type="text" id="latin_name" name="latin_name" class="form-control class="form-control @error('latin_name') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="temperature" class="form-label">Temperature</label>
+                            <input type="number" id="temperature" name="temperature" class="form-control class="form-control @error('temperature') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="humidity" class="form-label">Humidity</label>
+                            <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('name') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="nutrition" class="form-label">Nutrition</label>
+                            <input type="number" id="nutrition" name="nutrition" class="form-control class="form-control @error('nutrition') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="light" class="form-label">Light</label>
+                            <input type="number" id="light" name="light" class="form-control class="form-control @error('light') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="water_f" class="form-label">Water Level Full</label>
+                            <input type="number" id="water_f" name="water_f" class="form-control class="form-control @error('water_f') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="water_e" class="form-label">Water Full Emergency</label>
+                            <input type="number" id="water_e" name="water_e" class="form-control class="form-control @error('water_e') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Back
+                    </button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+                </div>
+                </div>
+            </div>
 
             <!-- Footer -->
             <footer class="content-footer footer bg-footer-theme">

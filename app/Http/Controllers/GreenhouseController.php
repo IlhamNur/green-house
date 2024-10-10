@@ -7,6 +7,7 @@ use PhpMqtt\Client\MqttClient;
 use App\Models\Greenhouse;
 use App\Models\PlantList;
 use App\Models\SensorData;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -15,10 +16,15 @@ class GreenhouseController extends Controller
 {
     public function index()
     {
-        $greenhouses = Greenhouse::where('user_id', Auth::user()->id)->orderBy('pin_status', 'desc')->get();
+        if (Auth::user()->role == 'user') {
+            $greenhouses = Greenhouse::where('user_id', Auth::user()->id)->orderBy('pin_status', 'desc')->get();
+        } else {
+            $users = User::all();
+            $greenhouses = Greenhouse::orderBy('user_id', 'asc')->get();
+        }
         $plant_lists = PlantList::all();
 
-        return view('greenhouse-manage', ['greenhouses' => $greenhouses, 'plant_lists' => $plant_lists]);
+        return view('greenhouse-manage', ['greenhouses' => $greenhouses, 'plant_lists' => $plant_lists, 'users' => $users]);
     }
 
     public function store(Request $request)
