@@ -257,7 +257,7 @@
                           <h5 class="card-title text-primary">Welcome {{ Auth::user()->name }}! 🎉</h5>
                           <p class="mb-4">
                             @if (isset($greenhouse))
-                                This is your <span class="fw-bold">{{ $greenhouse->name }}</span> dashboard monitoring.
+                                This is your <span class="fw-bold">{{ $greenhouse->name }}</span> dashboard monitoring. Harvest in {{ $daysUntil }} days 🎉🎉🎉.
                                 @if (!isset($sensorDatas[0]))
                                     This greenhouse has no data.
                                 @endif

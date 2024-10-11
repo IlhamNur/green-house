@@ -15,16 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('user_id');
-            $table->string('plant_type');
-            $table->integer('temperature');
-            $table->integer('humidity');
-            $table->integer('nutrition');
-            $table->integer('light');
-            $table->integer('water_f');
-            $table->integer('water_e');
             $table->integer('pin_status');
-            $table->integer('period');
-            $table->integer('harvest_time');
             $table->timestamps();
         });
     }

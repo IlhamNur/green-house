@@ -287,11 +287,12 @@
                     <tbody class="table-border-bottom-0">
                     @if(isset($greenhouses))
                     @foreach($greenhouses as $greenhouse)
-                      <tr>
+                    <tr>
                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ $greenhouse->name }}</strong></td>
-                        <td>{{ $greenhouse->plant_type }}</td>
-                        <td>{{ $greenhouse->created_at }}</td>
-                        <td>{{ $greenhouse->created_at->copy()->addDays($greenhouse->harvest_time)->format('Y-m-d H:i:s') }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         @if(Auth::user()->role == 'user')
                             <td>
                                 <form action="{{ route('greenhouse-pin', $greenhouse->id) }}" method="POST">
@@ -317,24 +318,56 @@
                             @endforeach
                         @endif
                         <td>
+                        @if(Auth::user()->role == 'user')
                           <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                 <i class="bx bx-dots-vertical-rounded"></i>
                             </button>
                             <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle{{ $greenhouse->id }}"
-                                ><i class="bx bx-info-circle me-1"></i> More Info</a
+                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalCenter{{ $greenhouse->id }}"
+                                ><i class="bx bx-plus-circle me-1"></i> Add New Period</a
                               >
                               <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#smallModal{{ $greenhouse->id }}"
                                 ><i class="bx bx-trash me-1"></i> Delete</a
                               >
-                              <a class="dropdown-item" href="{{ route('greenhouse-export', $greenhouse->id) }}"
+                            </div>
+                          </div>
+                        @else
+                            <button type="button" class="btn btn-icon btn-outline-primary">
+                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#smallModal{{ $greenhouse->id }}"
+                                    ><span class="tf-icons bx bx-trash"></span></a
+                                  >
+                            </button>
+                        @endif
+                        </td>
+                      </tr>
+                      @foreach($periods as $period)
+                      @if($greenhouse->id == $period->gh_id)
+                      <tr>
+                        <td></td>
+                        <td>{{ $period->period }}</td>
+                        <td>{{ $period->plant_type }}</td>
+                        <td>{{ $period->created_at }}</td>
+                        <td>{{ $period->created_at->copy()->addDays($period->harvest_time)->format('Y-m-d H:i:s') }}</td>
+                        <td></td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modalToggle{{ $period->id }}"
+                                ><i class="bx bx-info-circle me-1"></i> More Info</a
+                              >
+                              <a class="dropdown-item" href="{{ route('greenhouse-export', $period->id) }}"
                                 ><i class="bx bx-download me-1"></i> Download Data</a
                               >
                             </div>
                           </div>
                         </td>
                       </tr>
+                      @endif
+                      @endforeach
                     @endforeach
                     @endif
                     </tbody>
@@ -396,11 +429,51 @@
               @endif
               @if(isset($greenhouses))
               @foreach ($greenhouses as $greenhouse)
+              @if(Auth::user()->role == 'user')
+            {{-- Greenhouse Add Period Modal --}}
+            <div class="modal fade" id="modalCenter{{ $greenhouse->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalCenter{{ $greenhouse->id }}Title">Add New Period to Greeenhouse</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <form action="{{ route('greenhouse-add', $greenhouse->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col mb-3">
+                            <label for="plant_type" class="form-label">Plant_Type</label>
+                            <select class="form-select" id="plant_type" name="plant_type" aria-label="Select Plant Type" required>
+                            @foreach ($plant_lists as $plant_list)
+                                <option value={{ $plant_list->plant_name }}>{{ $plant_list->plant_name }} ({{ $plant_list->latin_name }})</option>
+                            @endforeach
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                      </button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              @endif
+              @foreach ($periods as $period)
                 <!-- Modal 1-->
                 <div
                     class="modal fade"
-                    id="modalToggle{{ $greenhouse->id }}"
-                    aria-labelledby="modalToggleLabel{{ $greenhouse->id }}"
+                    id="modalToggle{{ $period->id }}"
+                    aria-labelledby="modalToggleLabel{{ $period->id }}"
                     tabindex="-1"
                     style="display: none"
                     aria-hidden="true"
@@ -408,7 +481,7 @@
                         <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalToggleLabel{{ $greenhouse->id }}">{{ $greenhouse->name }}</h5>
+                                <h5 class="modal-title" id="modalToggleLabel{{ $period->id }}">{{ $greenhouse->name }} Periode {{ $period->period }}</h5>
                                 <button
                                     type="button"
                                     class="btn-close"
@@ -418,11 +491,12 @@
                             </div>
                             <div class="modal-body">
                                 <ol class="list-group list-group-numbered">
-                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Temperature Threshold : </strong> {{ $greenhouse->temperature }}&deg;C</li>
-                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Humidity Threshold : </strong> {{ $greenhouse->humidity }}%</li>
-                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Nutrition Threshold : </strong> {{ $greenhouse->nutrition }}ppm</li>
-                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Light Threshold : </strong> {{ $greenhouse->light }}lux</li>
-                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Level Threshold : </strong> max: {{ $greenhouse->water_f }}cm min: {{ $greenhouse->water_e }}cm</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Temperature Threshold : </strong> {{ $period->temperature }}&deg;C</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Humidity Threshold : </strong> {{ $period->humidity }}%</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Nutrition Threshold : </strong> {{ $period->nutrition }}ppm</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Light Threshold : </strong> {{ $period->light }}lux</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Level Threshold : </strong> max: {{ $period->water_f }}cm min: {{ $period->water_e }}cm</li>
+                                    <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Harvest Time: </strong> {{ $period->harvest_time }}day</li>
                                 </ol>
                             </div>
                             <div class="modal-footer">
@@ -432,7 +506,7 @@
                                 @if(Auth::user()->role == 'user')
                                     <button
                                         class="btn btn-primary"
-                                        data-bs-target="#modalToggle{{ $greenhouse->id }}_edit"
+                                        data-bs-target="#modalToggle{{ $period->id }}_edit"
                                         data-bs-toggle="modal"
                                         data-bs-dismiss="modal"
                                     >
@@ -446,15 +520,15 @@
                 <!-- Modal 2-->
                 <div
                     class="modal fade"
-                    id="modalToggle{{ $greenhouse->id }}_edit"
+                    id="modalToggle{{ $period->id }}_edit"
                     aria-hidden="true"
-                    aria-labelledby="modalToggleLabel{{ $greenhouse->id }}_edit"
+                    aria-labelledby="modalToggleLabel{{ $period->id }}_edit"
                     tabindex="-1"
                 >
                     <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="modalToggleLabel{{ $greenhouse->id }}_edit">Edit Data {{ $greenhouse->name }}</h5>
+                        <h5 class="modal-title" id="modalToggleLabel{{ $period->id }}_edit">Edit Data {{ $greenhouse->name }} Periode {{ $period->period }}</h5>
                         <button
                             type="button"
                             class="btn-close"
@@ -462,63 +536,57 @@
                             aria-label="Close"
                         ></button>
                         </div>
-                        <form action="{{ route('greenhouse-update', $greenhouse->id) }}" method="POST">
+                        <form action="{{ route('greenhouse-update', $period->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                         <div class="modal-body">
                             <div class="row">
-                              <div class="col mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" id="name" name="name" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $greenhouse->name }}" required/>
-                              </div>
-                            </div>
-                            <div class="row">
-                                <div class="col mb-3">
-                                  <label for="plant_type" class="form-label">Plant Type</label>
-                                  <input type="text" id="plant_type" name="plant_type" class="form-control class="form-control @error('plant_type') is-invalid @enderror" value="{{ $greenhouse->plant_type }}" required/>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col mb-3">
                                   <label for="temperature" class="form-label">Temperature</label>
-                                  <input type="number" id="temperature" name="temperature" class="form-control class="form-control @error('temperature') is-invalid @enderror" value="{{ $greenhouse->temperature }}" required/>
+                                  <input type="number" id="temperature" name="temperature" class="form-control class="form-control @error('temperature') is-invalid @enderror" value="{{ $period->temperature }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="humidity" class="form-label">Humidity</label>
-                                  <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $greenhouse->humidity }}" required/>
+                                  <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $period->humidity }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="nutrition" class="form-label">Nutrition</label>
-                                  <input type="number" id="nutrition" name="nutrition" class="form-control class="form-control @error('nutrition') is-invalid @enderror" value="{{ $greenhouse->nutrition }}" required/>
+                                  <input type="number" id="nutrition" name="nutrition" class="form-control class="form-control @error('nutrition') is-invalid @enderror" value="{{ $period->nutrition }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="light" class="form-label">Light</label>
-                                  <input type="number" id="light" name="light" class="form-control class="form-control @error('light') is-invalid @enderror" value="{{ $greenhouse->light }}" required/>
+                                  <input type="number" id="light" name="light" class="form-control class="form-control @error('light') is-invalid @enderror" value="{{ $period->light }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="water_f" class="form-label">Water Level Full</label>
-                                  <input type="number" id="water_f" name="water_f" class="form-control class="form-control @error('water_f') is-invalid @enderror" value="{{ $greenhouse->water_f }}" required/>
+                                  <input type="number" id="water_f" name="water_f" class="form-control class="form-control @error('water_f') is-invalid @enderror" value="{{ $period->water_f }}" required/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="water_e" class="form-label">Water Full Emergency</label>
-                                  <input type="number" id="water_e" name="water_e" class="form-control class="form-control @error('water_e') is-invalid @enderror" value="{{ $greenhouse->water_e }}" required/>
+                                  <input type="number" id="water_e" name="water_e" class="form-control class="form-control @error('water_e') is-invalid @enderror" value="{{ $period->water_e }}" required/>
                                 </div>
                             </div>
+                            <div class="row">
+                              <div class="col mb-3">
+                                <label for="harvest_time" class="form-label">Harvest Time</label>
+                                <input type="number" id="harvest_time" name="harvest_time" class="form-control class="form-control @error('harvest_time') is-invalid @enderror" value="{{ $period->harvest_time }}" required/>
+                              </div>
+                          </div>
                         </div>
                         <div class="modal-footer">
                         <button
                             class="btn btn-outline-secondary"
-                            data-bs-target="#modalToggle{{ $greenhouse->id }}"
+                            data-bs-target="#modalToggle{{ $period->id }}"
                             data-bs-toggle="modal"
                             data-bs-dismiss="modal"
                         >
@@ -530,6 +598,7 @@
                     </div>
                     </div>
                 </div>
+                @endforeach
                 {{-- Delete Alert Modal --}}
                 <div class="modal fade" id="smallModal{{ $greenhouse->id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-sm" role="document">

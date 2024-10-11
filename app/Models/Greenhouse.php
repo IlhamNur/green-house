@@ -11,5 +11,5 @@ class Greenhouse extends Model
 
     protected $table = 'greenhouses';
 
-    protected $fillable = ['name', 'user_id', 'plant_type', 'temperature', 'humidity', 'nutrition', 'light', 'water_f',  'water_e', 'pin_status', 'period', 'harvest_time'];
+    protected $fillable = ['name', 'user_id', 'pin_status'];
 }

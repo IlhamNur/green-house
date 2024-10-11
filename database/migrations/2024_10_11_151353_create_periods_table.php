@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sensor_datas', function (Blueprint $table) {
+        Schema::create('periods', function (Blueprint $table) {
             $table->id();
-            $table->integer('greenhouse_id');
+            $table->integer('gh_id');
+            $table->string('plant_type');
             $table->integer('temperature');
             $table->integer('humidity');
             $table->integer('nutrition');
             $table->integer('light');
-            $table->integer('ph');
-            $table->integer('water_level');
-            $table->integer('period_id');
+            $table->integer('water_f');
+            $table->integer('water_e');
+            $table->integer('period');
+            $table->integer('harvest_time');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sensor_datas');
+        Schema::dropIfExists('periods');
     }
 };

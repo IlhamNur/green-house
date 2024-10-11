@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use PhpMqtt\Client\MqttClient;
 use App\Models\SensorData;
+use App\Models\Period;
+
 
 class MqttSubscribe extends Command
 {
@@ -53,6 +55,9 @@ class MqttSubscribe extends Command
                 return;
             }
 
+            $period = Period::where('gh_id', $data['id_greenhouse'])->count();
+            $period_id = Period::where('gh_id', $data['id_greenhouse'])->where('period', $period)->first()->id;
+
             // Store the data in the database
             SensorData::create([
                 'greenhouse_id' => $data['id_greenhouse'],
@@ -62,6 +67,7 @@ class MqttSubscribe extends Command
                 'ph'            => $data['ph'],
                 'light'         => $data['Light'],
                 'water_level'   => $data['Jarak'],
+                'period_id'     => $period_id
             ]);
 
             $this->info('Data saved to the database.');

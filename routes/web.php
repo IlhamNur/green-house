@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/get-sensor-data', [HomeController::class, 'getSensorData'])->name('getSensorData');
         Route::get('/greenhouse-manage', [GreenhouseController::class, 'index'])->name('greenhouse-manage');
         Route::post('/greenhouse-manage', [GreenhouseController::class, 'store'])->name('greenhouse-insert');
+        Route::post('/greenhouse-manage/add/{id}', [GreenhouseController::class, 'add'])->name('greenhouse-add');
         Route::put('/greenhouse-manage/update/{id}', [GreenhouseController::class, 'update'])->name('greenhouse-update');
         Route::put('/greenhouse-manage/update-pin/{id}', [GreenhouseController::class, 'updatePin'])->name('greenhouse-pin');
     });
