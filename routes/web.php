@@ -21,7 +21,7 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     // User routes
     Route::middleware([RoleMiddleware::class . ':user'])->group(function () {
-        Route::get('/', [HomeController::class, 'index'])->name('home');
+        // Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::get('/get-sensor-data', [HomeController::class, 'getSensorData'])->name('getSensorData');
         Route::get('/greenhouse-manage', [GreenhouseController::class, 'index'])->name('greenhouse-manage');
         Route::post('/greenhouse-manage', [GreenhouseController::class, 'store'])->name('greenhouse-insert');
@@ -31,11 +31,12 @@ Route::middleware('auth')->group(function () {
 
     // SuperAdmin routes
     Route::middleware([RoleMiddleware::class . ':superadmin'])->group(function () {
-        Route::get('/', [GreenhouseController::class, 'index'])->name('home');
+        // Route::get('/', [GreenhouseController::class, 'index'])->name('home');
         Route::post('/plant-list', [PlantController::class, 'store'])->name('plant-insert');
         Route::delete('/plant-list/{id}', [PlantController::class, 'destroy'])->name('plant-list-destroy');
     });
 
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/plant-list', [PlantController::class, 'index'])->name('plant-list');
     Route::delete('/greenhouse-manage/{id}', [GreenhouseController::class, 'destroy'])->name('greenhouse-destroy');
     Route::get('/greenhouse-manage/export/{id}', [GreenhouseController::class, 'export'])->name('greenhouse-export');

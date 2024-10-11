@@ -25,6 +25,7 @@ class PlantController extends Controller
             'light' => 'required',
             'water_f' => 'required',
             'water_e' => 'required',
+            'harvest_time' => 'required'
         ]);
 
         // Handle the file upload

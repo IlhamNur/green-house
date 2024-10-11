@@ -22,7 +22,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1050,
             'light' => 15000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 40
         ]);
 
         DB::table('plant_lists')->insert([
@@ -34,7 +35,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 560,
             'light' => 15000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 60
         ]);
 
         DB::table('plant_lists')->insert([
@@ -46,7 +48,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1260,
             'light' => 12000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 40
         ]);
 
         DB::table('plant_lists')->insert([
@@ -58,7 +61,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1050,
             'light' => 15000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 30
         ]);
 
         DB::table('plant_lists')->insert([
@@ -70,7 +74,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1260,
             'light' => 20000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 75
         ]);
 
         DB::table('plant_lists')->insert([
@@ -82,7 +87,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1400,
             'light' => 15000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 85
         ]);
 
         DB::table('plant_lists')->insert([
@@ -94,7 +100,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1260,
             'light' => 15000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 120
         ]);
 
         DB::table('plant_lists')->insert([
@@ -106,7 +113,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1190,
             'light' => 25000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 70
         ]);
 
         DB::table('plant_lists')->insert([
@@ -118,7 +126,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1050,
             'light' => 10000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 60
         ]);
 
         DB::table('plant_lists')->insert([
@@ -130,7 +139,8 @@ class PlantListSeeder extends Seeder
             'nutrition' => 1960,
             'light' => 15000,
             'water_f' => 4,
-            'water_e' => 7
+            'water_e' => 7,
+            'harvest_time' => 100
         ]);
     }
 }

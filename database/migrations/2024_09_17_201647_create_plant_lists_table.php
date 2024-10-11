@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('light');
             $table->integer('water_f');
             $table->integer('water_e');
+            $table->integer('harvest_time');
             $table->timestamps();
         });
     }

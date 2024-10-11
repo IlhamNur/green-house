@@ -272,9 +272,10 @@
                     <thead>
                       <tr>
                         <th>GreenHouse Name</th>
+                        <th>Period</th>
                         <th>Plant Type</th>
-                        <th>Create Date</th>
-                        <th>Update Date</th>
+                        <th>Planting Date</th>
+                        <th>Harvest Date</th>
                         @if(Auth::user()->role == 'user')
                             <th>Pin</th>
                         @else
@@ -290,7 +291,7 @@
                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ $greenhouse->name }}</strong></td>
                         <td>{{ $greenhouse->plant_type }}</td>
                         <td>{{ $greenhouse->created_at }}</td>
-                        <td>{{ $greenhouse->updated_at }}</td>
+                        <td>{{ $greenhouse->created_at->copy()->addDays($greenhouse->harvest_time)->format('Y-m-d H:i:s') }}</td>
                         @if(Auth::user()->role == 'user')
                             <td>
                                 <form action="{{ route('greenhouse-pin', $greenhouse->id) }}" method="POST">
@@ -341,6 +342,7 @@
                 </div>
               </div>
               <!--/ Basic Bootstrap Table -->
+              @if(Auth::user()->role == 'user')
               {{-- Greenhouse Add Modal --}}
               <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -391,6 +393,7 @@
                   </div>
                 </div>
               </div>
+              @endif
               @if(isset($greenhouses))
               @foreach ($greenhouses as $greenhouse)
                 <!-- Modal 1-->

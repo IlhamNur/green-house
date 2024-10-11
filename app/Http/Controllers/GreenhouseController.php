@@ -7,7 +7,6 @@ use PhpMqtt\Client\MqttClient;
 use App\Models\Greenhouse;
 use App\Models\PlantList;
 use App\Models\SensorData;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -16,15 +15,10 @@ class GreenhouseController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->role == 'user') {
-            $greenhouses = Greenhouse::where('user_id', Auth::user()->id)->orderBy('pin_status', 'desc')->get();
-        } else {
-            $users = User::all();
-            $greenhouses = Greenhouse::orderBy('user_id', 'asc')->get();
-        }
+        $greenhouses = Greenhouse::where('user_id', Auth::user()->id)->orderBy('pin_status', 'desc')->get();
         $plant_lists = PlantList::all();
 
-        return view('greenhouse-manage', ['greenhouses' => $greenhouses, 'plant_lists' => $plant_lists, 'users' => $users]);
+        return view('greenhouse-manage', ['greenhouses' => $greenhouses, 'plant_lists' => $plant_lists]);
     }
 
     public function store(Request $request)
@@ -47,6 +41,8 @@ class GreenhouseController extends Controller
         $data['water_f'] = strval($plant_threshold->water_f);
         $data['water_e'] = strval($plant_threshold->water_e);
         $data['pin_status'] = strval(0);
+        $data['harvest_time'] = strval($plant_threshold->harvest_time);
+        $data['period'] = strval(1);
 
         $insertData = Greenhouse::create($data);
         $lastId = $insertData->id;

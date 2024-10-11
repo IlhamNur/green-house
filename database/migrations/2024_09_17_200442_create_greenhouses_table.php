@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('water_f');
             $table->integer('water_e');
             $table->integer('pin_status');
+            $table->integer('period');
+            $table->integer('harvest_time');
             $table->timestamps();
         });
     }

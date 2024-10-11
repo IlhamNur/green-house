@@ -346,6 +346,7 @@
                             <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Light Threshold : </strong> {{ $plant_list->light }}lux</li>
                             <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Full Threshold : </strong> {{ $plant_list->water_f }}cm</li>
                             <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Water Emergency Threshold : </strong> {{ $plant_list->water_e }}cm</li>
+                            <li class="list-group-item"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Harvest Time : </strong> {{ $plant_list->harvest_time }}day</li>
                          </ol>
                         </div>
                         <div class="modal-footer">
@@ -463,6 +464,12 @@
                             <div class="col mb-3">
                             <label for="water_e" class="form-label">Water Full Emergency</label>
                             <input type="number" id="water_e" name="water_e" class="form-control class="form-control @error('water_e') is-invalid @enderror" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                            <label for="harvest_time" class="form-label">Harvest Time</label>
+                            <input type="number" id="harvest_time" name="harvest_time" class="form-control class="form-control @error('harvest_time') is-invalid @enderror" required/>
                             </div>
                         </div>
                     </div>
