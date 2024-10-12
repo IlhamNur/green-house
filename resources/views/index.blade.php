@@ -359,7 +359,7 @@
                                 </div>
                                 <div class="d-flex flex-column">
                                 <small>Threshold</small>
-                                <h6 class="mb-0">{{ $greenhouse->light }}lux</h6>
+                                <h6 class="mb-0">{{ $period->light }}lux</h6>
                                 </div>
                             </div>
                             </div>
