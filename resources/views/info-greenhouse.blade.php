@@ -22,9 +22,6 @@
             </button>
         </form>
     </div>
-    <div class="col">
-        <button type="button" class="btn btn-primary" id="rotateBtn">rotate</button>
-    </div>
 </div>
 
 

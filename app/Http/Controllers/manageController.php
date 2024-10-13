@@ -19,6 +19,8 @@ class manageController extends Controller
             INNER JOIN tanamanjenis AS TJ ON LG.id_tanaman = TJ.id
             WHERE LG.id_user = ?
         ', [$id]);
+
+        
         // dd($data);
 
         return view('manage-greenhouse', compact('data'));
@@ -49,11 +51,13 @@ class manageController extends Controller
     public function edit($id)
     {
         // Fetch data from your database table
-        $this->data = DB::select('
+        $this->data = DB::selectone('
             SELECT SD.temperature AS temperature, SD.humidity AS humidity, SD.ph, SD.soil_moisture AS soil_moisture, SD.light_intensity AS light_intensity, LG.pin_status AS pin_status, SD.id_greenhouse AS id
             FROM sensor_data AS SD
             INNER JOIN list_greenhouses AS LG ON SD.id_greenhouse = LG.id
             WHERE SD.id_greenhouse = ?
+            ORDER BY SD.id DESC
+            LIMIT 1
         ', [$id]);
     
         $data = List_Greenhouse::find($id);
@@ -104,7 +108,14 @@ class manageController extends Controller
             ORDER BY created_at DESC
         ', [$id]);
 
-        return view('info-greenhouse', compact('data'));
+        $threshold = DB::selectone('
+            SELECT Lg.id, LG.name AS nama ,TJ.temperature AS tTem, TJ.humidity AS tHum, TJ.soil_min AS tSoil, TJ.light_intensity AS tLig
+            FROM tanamanjenis AS TJ
+            INNER JOIN list_greenhouses AS LG ON Lg.id_tanaman = TJ.id
+            WHERE LG.id = ?
+        ', [$id]);
+
+        return view('info-greenhouse', compact('data', 'threshold'));
 
     }
     public function publishtresh(Request $request, $id)
