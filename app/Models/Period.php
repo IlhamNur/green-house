@@ -10,6 +10,16 @@ class Period extends Model
     use HasFactory;
 
     protected $table = 'periods';
-
-    protected $fillable = ['gh_id', 'plant_type', 'temperature', 'humidity', 'nutrition', 'light', 'water_f',  'water_e', 'period', 'harvest_time'];
+    protected $fillable = [
+        'gh_id',
+        'plant_type',
+        'temperature',
+        'humidity',
+        'nutrition',
+        'light',
+        'water_f',
+        'water_e',
+        'period',
+        'harvest_time'
+    ];
 }

@@ -2,61 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Greenhouse;
-use App\Models\SensorData;
-use App\Models\User;
-use App\Models\Period;
+use App\Models\{Greenhouse, SensorData, User, Period};
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
 
 class HomeController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->role == 'user') {
-            $userId = Auth::user()->id;
-            $greenhouse = Greenhouse::where('pin_status', '1')->where('user_id', $userId)->first();
+        $user = Auth::user();
 
+        if ($user->role === 'user') {
+            $greenhouse = Greenhouse::where('pin_status', 1)->where('user_id', $user->id)->first();
 
             if ($greenhouse) {
-                $today = Carbon::today();
-                $greenhouseId = $greenhouse->id;
-                $period = Period::where('gh_id', $greenhouseId)->count();
-                $period = Period::where('gh_id', $greenhouseId)->where('period', $period)->first();
+                $currentPeriod = Period::where('gh_id', $greenhouse->id)->orderBy('period', 'desc')->first();
 
-                $target = Carbon::parse($period->created_at->copy()->addDays($period->harvest_time)->format('Y-m-d H:i:s'));
+                if ($currentPeriod) {
+                    $targetDate = Carbon::parse($currentPeriod->created_at)->addDays($currentPeriod->harvest_time);
+                    $daysUntilHarvest = (int) abs(Carbon::today()->diffInDays($targetDate, false));
 
-                $daysUntil = (int) abs($today->diffInDays($target, false));
+                    $sensorData = SensorData::where('greenhouse_id', $greenhouse->id)
+                        ->where('period_id', $currentPeriod->id)
+                        ->latest()
+                        ->take(7)
+                        ->get();
 
-                $sensorDatas = SensorData::where('greenhouse_id', $greenhouseId)->where('period_id', $period->id)->latest()->take(7)->get();
-                if ($sensorDatas) {
-                    return view('index', ['greenhouse' => $greenhouse, 'sensorDatas' => $sensorDatas, 'period' => $period, 'daysUntil' => $daysUntil]);
+                    return view('index', [
+                        'greenhouse' => $greenhouse,
+                        'sensorDatas' => $sensorData,
+                        'period' => $currentPeriod,
+                        'daysUntil' => $daysUntilHarvest
+                    ]);
                 }
-
-                return view('index', ['greenhouse' => $greenhouse, 'daysUntil' => $daysUntil]);
             }
 
             return view('index');
-        } else {
-            $users = User::all();
-            $greenhouses = Greenhouse::orderBy('user_id', 'asc')->get();
-            $periods = Period::all();
-
-            return view('greenhouse-manage', ['greenhouses' => $greenhouses, 'users' => $users, 'periods' => $periods]);
         }
+
+        return view('greenhouse-manage', [
+            'users' => User::all(),
+            'greenhouses' => Greenhouse::orderBy('user_id')->get(),
+            'periods' => Period::all()
+        ]);
     }
 
     public function getSensorData()
     {
-        $userId = Auth::user()->id;
-        $greenhouse = Greenhouse::where('pin_status', '1')->where('user_id', $userId)->first();
+        $user = Auth::user();
+        $greenhouse = Greenhouse::where('pin_status', 1)->where('user_id', $user->id)->first();
 
-        if ($greenhouse) {
-            $sensorDatas = SensorData::where('greenhouse_id', $greenhouse->id)->latest()->take(7)->get();
-            return response()->json($sensorDatas);
-        }
+        $sensorData = $greenhouse ? SensorData::where('greenhouse_id', $greenhouse->id)->latest()->take(7)->get() : [];
 
-        return response()->json([]);
+        return response()->json($sensorData);
     }
 }

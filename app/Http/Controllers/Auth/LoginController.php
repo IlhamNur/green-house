@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -16,20 +15,20 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $this->validator($request->all())->validate();
+        // Validate request data
+        $request->validate([
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:8',
+        ]);
 
+        // Attempt to log in the user
         if (Auth::attempt($request->only('email', 'password'))) {
             return redirect()->route('home');
         }
 
-        return redirect()->back()->withErrors(['email' => 'Wrong Email and Password Combination!']);
-    }
-
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
+        // Redirect back with error message and input
+        return redirect()->back()
+            ->withErrors(['email' => 'Wrong Email and Password Combination!'])
+            ->withInput($request->except('password'));
     }
 }

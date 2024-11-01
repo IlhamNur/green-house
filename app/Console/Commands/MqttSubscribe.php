@@ -7,7 +7,6 @@ use PhpMqtt\Client\MqttClient;
 use App\Models\SensorData;
 use App\Models\Period;
 
-
 class MqttSubscribe extends Command
 {
     /**
@@ -35,19 +34,40 @@ class MqttSubscribe extends Command
 
     public function handle()
     {
-        $mqtt = new MqttClient('34.101.88.45', 1883, 'laravel-client');
+        $mqtt = $this->setupMqttClient();
 
-        $mqtt->connect();
+        try {
+            $mqtt->connect();
+            $this->subscribeToTopic($mqtt);
+            $mqtt->loop(true); // Keep the connection alive
+        } catch (\Exception $e) {
+            $this->error('An error occurred: ' . $e->getMessage());
+        } finally {
+            $mqtt->disconnect();
+        }
+    }
 
-        // Subscribe to the topic
+    /**
+     * Sets up and returns an MQTT client.
+     *
+     * @return MqttClient
+     */
+    private function setupMqttClient(): MqttClient
+    {
+        return new MqttClient('34.101.88.45', 1883, 'laravel-client');
+    }
+
+    /**
+     * Subscribes to the MQTT topic and handles incoming messages.
+     *
+     * @param MqttClient $mqtt
+     */
+    private function subscribeToTopic(MqttClient $mqtt)
+    {
         $mqtt->subscribe('mqtt/data1', function (string $topic, string $message) {
             $this->info("Received message: $message");
 
             $message = preg_replace('/([{,])(\s*)([a-zA-Z_]+)(\s*):/', '$1"$3":', $message);
-
-            // Decode the JSON message
-            $data = json_decode($message, true);
-
             $data = json_decode($message, true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
@@ -55,25 +75,60 @@ class MqttSubscribe extends Command
                 return;
             }
 
-            $period = Period::where('gh_id', $data['id_greenhouse'])->count();
-            $period_id = Period::where('gh_id', $data['id_greenhouse'])->where('period', $period)->first()->id;
-
-            // Store the data in the database
-            SensorData::create([
+            // Clean and validate the data
+            $cleanData = [
                 'greenhouse_id' => $data['id_greenhouse'],
-                'temperature'   => $data['Suhu'],
-                'humidity'      => $data['Kelembaban'],
-                'nutrition'     => $data['TDS'],
-                'ph'            => $data['ph'],
-                'light'         => $data['Light'],
-                'water_level'   => $data['Jarak'],
-                'period_id'     => $period_id
-            ]);
+                'temperature'   => $this->cleanNumericValue($data['Suhu']),
+                'humidity'      => $this->cleanNumericValue($data['Kelembaban']),
+                'nutrition'     => $this->cleanNumericValue($data['TDS']),
+                'ph'            => $this->cleanNumericValue($data['ph']),
+                'light'         => $this->cleanNumericValue($data['Light']),
+                'water_level'   => $this->cleanNumericValue($data['Jarak'])
+            ];
 
-            $this->info('Data saved to the database.');
+            // Fetch the period
+            $period = Period::where('gh_id', $data['id_greenhouse'])
+                ->latest('period')
+                ->first();
+
+            if (!$period) {
+                $this->error('Period not found for greenhouse ID: ' . $data['id_greenhouse']);
+                return;
+            }
+
+            $cleanData['period_id'] = $period->id;
+
+            try {
+                $sensorData = SensorData::create($cleanData);
+                $this->info('Data saved successfully. ID: ' . $sensorData->id);
+
+                // Log the saved data for debugging
+                $this->info('Saved data: ' . print_r($cleanData, true));
+            } catch (\Exception $e) {
+                $this->error('Error saving to database: ' . $e->getMessage());
+                // Log the full stack trace for debugging
+                $this->error($e->getTraceAsString());
+            }
         }, 0);
+    }
 
-        $mqtt->loop(true); // Keep the connection alive
-        $mqtt->disconnect();
+    /**
+     * Clean numeric values, converting "NAN" to null or 0
+     *
+     * @param mixed $value
+     * @return float|null
+     */
+    private function cleanNumericValue($value)
+    {
+        // Remove any whitespace
+        $value = trim($value);
+
+        // Check for "NAN" or empty values
+        if ($value === 'NAN' || $value === '' || $value === null) {
+            return 0; // or return 0.0 if you prefer to store 0 instead of null
+        }
+
+        // Convert to float
+        return floatval($value);
     }
 }

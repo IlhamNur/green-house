@@ -11,5 +11,14 @@ class SensorData extends Model
 
     protected $table = 'sensor_datas';
 
-    protected $fillable = ['greenhouse_id', 'temperature', 'humidity', 'nutrition', 'light', 'ph', 'water_level', 'period_id'];
+    protected $fillable = [
+        'greenhouse_id',
+        'temperature',
+        'humidity',
+        'nutrition',
+        'light',
+        'ph',
+        'water_level',
+        'period_id'
+    ];
 }

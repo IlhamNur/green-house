@@ -410,7 +410,7 @@
                             <label for="plant_type" class="form-label">Plant_Type</label>
                             <select class="form-select" id="plant_type" name="plant_type" aria-label="Select Plant Type" required>
                             @foreach ($plant_lists as $plant_list)
-                                <option value={{ $plant_list->plant_name }}>{{ $plant_list->plant_name }} ({{ $plant_list->latin_name }})</option>
+                                <option value="{{ $plant_list->plant_name }}">{{ $plant_list->plant_name }} ({{ $plant_list->latin_name }})</option>
                             @endforeach
                             </select>
                         </div>
@@ -451,7 +451,7 @@
                             <label for="plant_type" class="form-label">Plant_Type</label>
                             <select class="form-select" id="plant_type" name="plant_type" aria-label="Select Plant Type" required>
                             @foreach ($plant_lists as $plant_list)
-                                <option value={{ $plant_list->plant_name }}>{{ $plant_list->plant_name }} ({{ $plant_list->latin_name }})</option>
+                                <option value="{{ $plant_list->plant_name }}">{{ $plant_list->plant_name }} ({{ $plant_list->latin_name }})</option>
                             @endforeach
                             </select>
                         </div>

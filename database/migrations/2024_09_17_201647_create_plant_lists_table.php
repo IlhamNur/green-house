@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('plant_lists', function (Blueprint $table) {
             $table->id();
             $table->string('plant_name');
-            $table->string('picture');
+            $table->string('picture')->nullable();
             $table->string('latin_name');
             $table->integer('temperature');
             $table->integer('humidity');

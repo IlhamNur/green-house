@@ -10,39 +10,38 @@ class PlantController extends Controller
     public function index()
     {
         $plant_lists = PlantList::all();
-        return view('plant-list', ['plant_lists' => $plant_lists]);
+        return view('plant-list', compact('plant_lists'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'plant_name' => 'required',
+            'plant_name' => 'required|string|max:255',
             'picture' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'latin_name' => 'required',
-            'temperature' => 'required',
-            'humidity' => 'required',
-            'nutrition' => 'required',
-            'light' => 'required',
-            'water_f' => 'required',
-            'water_e' => 'required',
-            'harvest_time' => 'required'
+            'latin_name' => 'required|string|max:255',
+            'temperature' => 'required|numeric',
+            'humidity' => 'required|numeric',
+            'nutrition' => 'required|numeric',
+            'light' => 'required|numeric',
+            'water_f' => 'required|numeric',
+            'water_e' => 'required|numeric',
+            'harvest_time' => 'required|numeric'
         ]);
 
-        // Handle the file upload
-        if ($request->hasFile('picture')) {
-            $data['picture'] = $request->file('picture')->store('plant_pictures', 'public');
+        if ($file = $request->file('picture')) {
+            $data['picture'] = $file->store('plant_pictures', 'public');
         }
 
-        // Save the data to the database
         PlantList::create($data);
 
-        return redirect()->back()->with('success', 'Plant added successfully!');
+        return redirect()->back()->withSuccess('Plant added successfully!');
     }
 
     public function destroy($id)
     {
-        PlantList::where('id', $id)->delete();
+        $plant = PlantList::findOrFail($id);
+        $plant->delete();
 
-        return redirect()->back()->with('success', 'Plant deleted successfully!');
+        return redirect()->back()->withSuccess('Plant deleted successfully!');
     }
 }

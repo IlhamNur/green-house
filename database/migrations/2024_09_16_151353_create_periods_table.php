@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('periods', function (Blueprint $table) {
             $table->id();
-            $table->integer('gh_id');
+            $table->foreignId('gh_id')->constrained('greenhouses')->cascadeOnDelete();
             $table->string('plant_type');
             $table->integer('temperature');
             $table->integer('humidity');

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('greenhouses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('user_id');
-            $table->integer('pin_status');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->boolean('pin_status')->default(0);
             $table->timestamps();
         });
     }

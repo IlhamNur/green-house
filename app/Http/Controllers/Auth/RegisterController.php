@@ -17,23 +17,22 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
+        $this->validateRegistration($request)->validate();
+        $this->createUser($request->all());
 
-        $this->create($request->all());
-
-        return redirect()->route('login')->with(['success', 'Account registered successfully!']);
+        return redirect()->route('login')->with('success', 'Account registered successfully!');
     }
 
-    protected function validator(array $data)
+    protected function validateRegistration(Request $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        return Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
     }
 
-    protected function create(array $data)
+    protected function createUser(array $data)
     {
         return User::create([
             'name' => $data['name'],

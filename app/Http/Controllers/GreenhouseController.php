@@ -4,87 +4,61 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PhpMqtt\Client\MqttClient;
-use App\Models\Greenhouse;
-use App\Models\Period;
-use App\Models\PlantList;
-use App\Models\SensorData;
+use App\Models\{Greenhouse, Period, PlantList, SensorData};
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-
 class GreenhouseController extends Controller
 {
+    protected $mqttHost = '34.101.88.45';
+    protected $mqttPort = 1883;
+    protected $mqttClientId = 'laravel-publisher';
+
     public function index()
     {
-        $greenhouses = Greenhouse::where('user_id', Auth::user()->id)->orderBy('pin_status', 'desc')->get();
-        $periods = Period::all();
-        $plant_lists = PlantList::all();
-
-        return view('greenhouse-manage', ['greenhouses' => $greenhouses, 'periods' => $periods, 'plant_lists' => $plant_lists]);
+        $userId = Auth::id();
+        return view('greenhouse-manage', [
+            'greenhouses' => Greenhouse::where('user_id', $userId)->orderBy('pin_status', 'desc')->get(),
+            'periods' => Period::all(),
+            'plant_lists' => PlantList::all()
+        ]);
     }
 
     public function store(Request $request)
     {
-        $user_id = Auth::user()->id;
-
         $data = $request->validate([
             'name' => 'required',
-        ]);
-
-        $data1 = $request->validate([
             'plant_type' => 'required',
         ]);
 
-        $plant_threshold = PlantList::where('plant_name', $data1['plant_type'])->first();
+        $plantThreshold = PlantList::where('plant_name', $data['plant_type'])->firstOrFail();
 
-        $data['user_id'] = strval($user_id);
-        $data1['temperature'] = strval($plant_threshold->temperature);
-        $data1['humidity'] = strval($plant_threshold->humidity);
-        $data1['nutrition'] = strval($plant_threshold->nutrition);
-        $data1['light'] = strval($plant_threshold->light);
-        $data1['ph'] = strval($plant_threshold->ph);
-        $data1['water_f'] = strval($plant_threshold->water_f);
-        $data1['water_e'] = strval($plant_threshold->water_e);
-        $data['pin_status'] = strval(0);
-        $data1['harvest_time'] = strval($plant_threshold->harvest_time);
-        $data1['period'] = strval(1);
+        $greenhouseData = [
+            'name' => $data['name'],
+            'user_id' => Auth::id(),
+            'pin_status' => 0,
+        ];
 
-        $insertData = Greenhouse::create($data);
-        $lastId = $insertData->id;
+        $periodData = [
+            'plant_type' => $data['plant_type'],
+            'temperature' => $plantThreshold->temperature,
+            'humidity' => $plantThreshold->humidity,
+            'nutrition' => $plantThreshold->nutrition,
+            'light' => $plantThreshold->light,
+            'ph' => $plantThreshold->ph,
+            'water_f' => $plantThreshold->water_f,
+            'water_e' => $plantThreshold->water_e,
+            'harvest_time' => $plantThreshold->harvest_time,
+            'period' => 1,
+        ];
 
-        $data1['gh_id'] = strval($lastId);
+        $greenhouse = Greenhouse::create($greenhouseData);
+        $periodData['gh_id'] = $greenhouse->id;
+        Period::create($periodData);
 
-        Period::create($data1);
+        $this->publishToMqtt($greenhouse->id, $periodData);
 
-        // Define MQTT server details
-        $mqttHost = '34.101.88.45';
-        $mqttPort = 1883; // Default MQTT port
-        $mqttClientId = 'laravel-publisher';
-
-        // Create an MQTT client instance
-        $mqtt = new MqttClient($mqttHost, $mqttPort, $mqttClientId);
-
-        // Connect to the MQTT broker
-        $mqtt->connect();
-
-        // Message payload (replace with dynamic data as needed)
-        $payload = json_encode([
-            'ts'   => $data1['temperature'],
-            'tc'   => $data1['light'],
-            'ttds' => $data1['nutrition'],
-            'tka'  => $data1['water_e'],
-            'tpa'  => $data1['water_f'],
-            'tkl'  => $data1['humidity']
-        ]);
-
-        // Publish the message to the topic
-        // $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
-        $mqtt->publish('mqtt/datasub' . strval($lastId), $payload, 0); // QoS level 0
-
-        // Disconnect the client after publishing
-        $mqtt->disconnect();
-
-        return redirect()->back()->with(['success', 'Greenhouse added successfully!', 'payload' => $payload]);
+        return redirect()->back()->with('success', 'Greenhouse added successfully!');
     }
 
     public function add(Request $request, $id)
@@ -93,63 +67,36 @@ class GreenhouseController extends Controller
             'plant_type' => 'required',
         ]);
 
-        $plant_threshold = PlantList::where('plant_name', $data['plant_type'])->first();
-        $period = Period::where('gh_id', $id)->count();
+        $plantThreshold = PlantList::where('plant_name', $data['plant_type'])->firstOrFail();
+        $periodCount = Period::where('gh_id', $id)->count();
 
-        $data['temperature'] = strval($plant_threshold->temperature);
-        $data['humidity'] = strval($plant_threshold->humidity);
-        $data['nutrition'] = strval($plant_threshold->nutrition);
-        $data['light'] = strval($plant_threshold->light);
-        $data['ph'] = strval($plant_threshold->ph);
-        $data['water_f'] = strval($plant_threshold->water_f);
-        $data['water_e'] = strval($plant_threshold->water_e);
-        $data['pin_status'] = strval(0);
-        $data['harvest_time'] = strval($plant_threshold->harvest_time);
-        $data['period'] = strval($period + 1);
-        $data['gh_id'] = strval($id);
+        $periodData = [
+            'gh_id' => $id,
+            'plant_type' => $data['plant_type'],
+            'temperature' => $plantThreshold->temperature,
+            'humidity' => $plantThreshold->humidity,
+            'nutrition' => $plantThreshold->nutrition,
+            'light' => $plantThreshold->light,
+            'ph' => $plantThreshold->ph,
+            'water_f' => $plantThreshold->water_f,
+            'water_e' => $plantThreshold->water_e,
+            'harvest_time' => $plantThreshold->harvest_time,
+            'period' => $periodCount + 1,
+        ];
 
-        Period::create($data);
+        Period::create($periodData);
+        $this->publishToMqtt($id, $periodData);
 
-        // Define MQTT server details
-        $mqttHost = '34.101.88.45';
-        $mqttPort = 1883; // Default MQTT port
-        $mqttClientId = 'laravel-publisher';
-
-        // Create an MQTT client instance
-        $mqtt = new MqttClient($mqttHost, $mqttPort, $mqttClientId);
-
-        // Connect to the MQTT broker
-        $mqtt->connect();
-
-        // Message payload (replace with dynamic data as needed)
-        $payload = json_encode([
-            'ts'   => $data['temperature'],
-            'tc'   => $data['light'],
-            'ttds' => $data['nutrition'],
-            'tka'  => $data['water_e'],
-            'tpa'  => $data['water_f'],
-            'tkl'  => $data['humidity']
-        ]);
-
-        // Publish the message to the topic
-        // $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
-        $mqtt->publish('mqtt/datasub' . strval($id), $payload, 0); // QoS level 0
-
-        // Disconnect the client after publishing
-        $mqtt->disconnect();
-
-        return redirect()->back()->with(['success', 'New period added successfully!', 'payload' => $payload]);
+        return redirect()->back()->with('success', 'New period added successfully!');
     }
 
     public function updatePin(Request $request, $id)
     {
-        $data = $request->validate([
-            'pin_status' => 'required'
-        ]);
+        $data = $request->validate(['pin_status' => 'required']);
 
         if ($data['pin_status'] == 1) {
             Greenhouse::where('pin_status', 1)->update(['pin_status' => 0]);
-        };
+        }
         Greenhouse::where('id', $id)->update($data);
 
         return redirect()->back();
@@ -176,49 +123,20 @@ class GreenhouseController extends Controller
         ]);
 
         Period::where('id', $id)->update($data);
+        $this->publishToMqtt($id, $data);
 
-        // Define MQTT server details
-        $mqttHost = '34.101.88.45';
-        $mqttPort = 1883; // Default MQTT port
-        $mqttClientId = 'laravel-publisher';
-
-        // Create an MQTT client instance
-        $mqtt = new MqttClient($mqttHost, $mqttPort, $mqttClientId);
-
-        // Connect to the MQTT broker
-        $mqtt->connect();
-
-        // Message payload (replace with dynamic data as needed)
-        $payload = json_encode([
-            'ts'   => $data['temperature'],
-            'tc'   => $data['light'],
-            'ttds' => $data['nutrition'],
-            'tka'  => $data['water_e'],
-            'tpa'  => $data['water_f'],
-            'tkl'  => $data['humidity']
-        ]);
-
-        // Publish the message to the topic
-        // $mqtt->publish('mqtt/datasub', $payload, 0); // QoS level 0
-        $mqtt->publish('mqtt/datasub' . strval($id), $payload, 0); // QoS level 0
-
-
-        // Disconnect the client after publishing
-        $mqtt->disconnect();
-
-        return redirect()->back()->with(['success', 'Greenhouse period updated successfully!', 'payload' => $payload]);
+        return redirect()->back()->with('success', 'Greenhouse period updated successfully!');
     }
 
     public function export($id)
     {
-        $sensorDatas = SensorData::where('period_id', $id)->get();
+        $sensorData = SensorData::where('period_id', $id)->get();
 
-        $response = new StreamedResponse(function () use ($sensorDatas) {
+        $response = new StreamedResponse(function () use ($sensorData) {
             $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['Temperature', 'Humidity', 'Nutrition', 'Light', 'PH', 'Water Level', 'Created At']);
 
-            fputcsv($handle, ['Temperature', 'Humidity', 'Nutriton', 'Light', 'PH', 'Water Level', 'Created At']);
-
-            foreach ($sensorDatas as $data) {
+            foreach ($sensorData as $data) {
                 fputcsv($handle, [
                     $data->temperature,
                     $data->humidity,
@@ -237,5 +155,22 @@ class GreenhouseController extends Controller
         $response->headers->set('Content-Disposition', 'attachment; filename="sensor_data.csv"');
 
         return $response;
+    }
+
+    private function publishToMqtt($id, array $data): void
+    {
+        $payload = json_encode([
+            'ts' => $data['temperature'],
+            'tc' => $data['light'],
+            'ttds' => $data['nutrition'],
+            'tka' => $data['water_e'],
+            'tpa' => $data['water_f'],
+            'tkl' => $data['humidity']
+        ]);
+
+        $mqtt = new MqttClient($this->mqttHost, $this->mqttPort, $this->mqttClientId);
+        $mqtt->connect();
+        $mqtt->publish("mqtt/datasub{$id}", $payload, 0);
+        $mqtt->disconnect();
     }
 }
