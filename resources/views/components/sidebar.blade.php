@@ -23,11 +23,6 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        option
-    </div>
-
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link" href="/manage-greenhouse">
@@ -52,6 +47,16 @@
                 <a class="collapse-item" href="/tanaman">Add Plant Threshold</a>
             </div>
         </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('Tanamanreff') }}">
+            <i class="bi bi-archive-fill"></i>
+            <span>Plant Data Refference</span></a>
     </li>
 
     </ul>

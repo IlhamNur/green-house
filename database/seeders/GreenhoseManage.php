@@ -32,17 +32,5 @@ class GreenhoseManage extends Seeder
             'soil_moisture' => 30,    
             'light_intensity' => 900, 
         ]);
-
-        //
-        //
-        DB::table('tanamanjenis')->insert([
-            'id_user' => 1,
-            'name' => 'sawi',
-            'temperature' => 20,
-            'humidity' => 80,
-            'soil_max' => 30,
-            'soil_min' => 8,    
-            'light_intensity' => 800,    
-        ]);
     }
 }

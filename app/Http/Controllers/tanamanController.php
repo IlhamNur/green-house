@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TanamanJenis;
+use App\Models\TanamanJenisAdmin;
 
 
 class tanamanController extends Controller
@@ -69,4 +70,31 @@ class tanamanController extends Controller
         return redirect()->route('manageGreenhouse')
         ->with('success', 'Post updated successfully.');
     }
+
+    public function gettanamanadmins()
+    {
+        $datas = DB::select('
+            SELECT *
+            FROM tanamanjenisadmins
+        ');
+        return view('plantreff', compact('datas'));
+    }
+
+    public function pushtanamanadmins(Request $request, $id)
+    {
+        $tanamanid = TanamanJenisAdmin::find($id);
+
+        $request['id_user'] = Auth::user()->id;
+        $request['name'] = $tanamanid-> name;
+        $request['temperature'] = $tanamanid-> temperature;
+        $request['humidity'] = $tanamanid-> humidity;
+        $request['soil_max'] = $tanamanid-> soil_max;
+        $request['soil_min'] = $tanamanid-> soil_min;
+        $request['light_intensity'] = $tanamanid-> light_intensity;
+
+        TanamanJenis::create($request->all());
+        return redirect()->route('manageGreenhouse')
+        ->with('success', 'Post updated successfully.');
+    }
+
 }

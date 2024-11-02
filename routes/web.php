@@ -34,6 +34,10 @@ Route::middleware(['auth'])->group(function () {
     
     //tanaman
     Route::get('/tanaman', [App\Http\Controllers\tanamanController::class, 'index'])->name('Tanaman');
+
+    Route::get('/tanamanreff', [App\Http\Controllers\tanamanController::class, 'gettanamanadmins'])->name('Tanamanreff');
+
+    Route::post('/addfromadmin/{id_tanaman}', [App\Http\Controllers\tanamanController::class, 'pushtanamanadmins'])->name('addTanamanfromAdmin');
     
     Route::get('/edit-tanaman/{id_tanaman}', [App\Http\Controllers\tanamanController::class, 'edit'])->name('editTanaman');
     

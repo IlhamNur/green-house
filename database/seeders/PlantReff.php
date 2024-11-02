@@ -1,0 +1,212 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+
+class PlantReff extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $plants = [
+            [
+                'name' => 'Sawi',
+                'picture' => 'assets/img/plants/sawi.png',
+                'latin_name' => 'Brassica juncea',
+                'temperature' => 24,
+                'humidity' => 60,
+                'light_intensity' => 15000,
+                'soil_max' => 30,
+                'soil_min' => 20,
+            ],
+            [
+                'name' => 'Selada',
+                'picture' => 'assets/img/plants/selada.png',
+                'latin_name' => 'Lactuca sativa',
+                'temperature' => 24,
+                'humidity' => 50,
+                'light_intensity' => 15000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Bayam',
+                'picture' => 'assets/img/plants/bayam.png',
+                'latin_name' => 'Spinacia oleracea',
+                'temperature' => 22,
+                'humidity' => 50,
+                'light_intensity' => 12000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Kangkung',
+                'picture' => 'assets/img/plants/Kangkung.png',
+                'latin_name' => 'Ipomoea aquatica',
+                'temperature' => 26,
+                'humidity' => 50,
+                'light_intensity' => 15000,
+                'soil_max' => 80,
+                'soil_min' => 70,
+            ],
+            [
+                'name' => 'Kemangi',
+                'picture' => 'assets/img/plants/kemangi.png',
+                'latin_name' => 'Ocimum basilicum',
+                'temperature' => 25,
+                'humidity' => 40,
+                'light_intensity' => 20000,
+                'soil_max' => 60,
+                'soil_min' => 50,
+            ],
+            [
+                'name' => 'Tomat',
+                'picture' => 'assets/img/plants/tomat.png',
+                'latin_name' => 'Solanum lycopersicum',
+                'temperature' => 26,
+                'humidity' => 60,
+                'light_intensity' => 15000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Seledri',
+                'picture' => 'assets/img/plants/seledri.png',
+                'latin_name' => 'Apium graveolens',
+                'temperature' => 21,
+                'humidity' => 55,
+                'light_intensity' => 15000,
+                'soil_max' => 80,
+                'soil_min' => 70,
+            ],
+            [
+                'name' => 'Mentimun',
+                'picture' => 'assets/img/plants/mentimun.png',
+                'latin_name' => 'Cucumis sativus',
+                'temperature' => 26,
+                'humidity' => 60,
+                'light_intensity' => 25000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Pakcoy',
+                'picture' => 'assets/img/plants/pakcoy.png',
+                'latin_name' => 'Brassica rapa chinensis',
+                'temperature' => 22,
+                'humidity' => 50,
+                'light_intensity' => 10000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Brokoli',
+                'picture' => 'assets/img/plants/brokoli.png',
+                'latin_name' => 'Brassica oleracea italica',
+                'temperature' => 24,
+                'humidity' => 50,
+                'light_intensity' => 15000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Wortel',
+                'picture' => 'assets/img/plants/wortel.png',
+                'latin_name' => 'Daucus carota',
+                'temperature' => 16,
+                'humidity' => 55,
+                'light_intensity' => 18000,
+                'soil_max' => 60,
+                'soil_min' => 50,
+            ],
+            [
+                'name' => 'Buncis',
+                'picture' => 'assets/img/plants/buncis.png',
+                'latin_name' => 'Phaseolus vulgaris',
+                'temperature' => 22,
+                'humidity' => 60,
+                'light_intensity' => 17000,
+                'soil_max' => 70,
+                'soil_min' => 50,
+            ],
+            [
+                'name' => 'Lobak',
+                'picture' => 'assets/img/plants/lobak.png',
+                'latin_name' => 'Raphanus sativus',
+                'temperature' => 18,
+                'humidity' => 55,
+                'light_intensity' => 15000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Kacang Panjang',
+                'picture' => 'assets/img/plants/kacang_panjang.png',
+                'latin_name' => 'Vigna unguiculata',
+                'temperature' => 24,
+                'humidity' => 60,
+                'light_intensity' => 17000,
+                'soil_max' => 65,
+                'soil_min' => 50,
+            ],
+            [
+                'name' => 'Paprika',
+                'picture' => 'assets/img/plants/paprika.png',
+                'latin_name' => 'Capsicum annuum',
+                'temperature' => 26,
+                'humidity' => 65,
+                'light_intensity' => 20000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Terong',
+                'picture' => 'assets/img/plants/terong.png',
+                'latin_name' => 'Solanum melongena',
+                'temperature' => 25,
+                'humidity' => 70,
+                'light_intensity' => 20000,
+                'soil_max' => 75,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Zucchini',
+                'picture' => 'assets/img/plants/zucchini.png',
+                'latin_name' => 'Cucurbita pepo',
+                'temperature' => 23,
+                'humidity' => 65,
+                'light_intensity' => 18000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+            [
+                'name' => 'Bit Merah',
+                'picture' => 'assets/img/plants/bit_merah.png',
+                'latin_name' => 'Beta vulgaris',
+                'temperature' => 18,
+                'humidity' => 60,
+                'light_intensity' => 16000,
+                'soil_max' => 65,
+                'soil_min' => 50,
+            ],
+            [
+                'name' => 'Daun Bawang',
+                'picture' => 'assets/img/plants/daun_bawang.png',
+                'latin_name' => 'Allium fistulosum',
+                'temperature' => 20,
+                'humidity' => 55,
+                'light_intensity' => 15000,
+                'soil_max' => 70,
+                'soil_min' => 60,
+            ],
+        ];
+
+        DB::table('tanamanjenisadmins')->insert($plants);
+    }
+}
