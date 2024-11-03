@@ -68,6 +68,7 @@
                 <li class="list-group-item"><i class="bi bi-dot"></i> <strong>Soil Min Threshold : </strong> {{ $data->soil_min }}cm</li>
             </ol>
         </div>
+        </div>
     </div>
 </div>
 @endforeach
