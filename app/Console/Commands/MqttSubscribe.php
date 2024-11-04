@@ -78,13 +78,15 @@ class MqttSubscribe extends Command
             // Clean and validate the data
             $cleanData = [
                 'greenhouse_id' => $data['id_greenhouse'],
-                'temperature'   => $this->cleanNumericValue($data['Suhu']),
-                'humidity'      => $this->cleanNumericValue($data['Kelembaban']),
-                'nutrition'     => $this->cleanNumericValue($data['TDS']),
-                'ph'            => $this->cleanNumericValue($data['ph']),
-                'light'         => $this->cleanNumericValue($data['Light']),
-                'water_level'   => $this->cleanNumericValue($data['Jarak'])
+                'temperature'   => $this->cleanNumericValue($data['Suhu'], 'Suhu'),
+                'humidity'      => $this->cleanNumericValue($data['Kelembaban'], 'Kelembaban'),
+                'nutrition'     => $this->cleanNumericValue($data['TDS'], 'TDS'),
+                'ph'            => $this->cleanNumericValue($data['ph'], 'ph'),
+                'light'         => $this->cleanNumericValue($data['Light'], 'Light'),
+                'water_level'   => $this->cleanNumericValue($data['Jarak'], 'Jarak')
             ];
+
+
 
             // Fetch the period
             $period = Period::where('gh_id', $data['id_greenhouse'])
@@ -113,19 +115,25 @@ class MqttSubscribe extends Command
     }
 
     /**
-     * Clean numeric values, converting "NAN" to null or 0
+     * Clean numeric values, converting "NAN" to specific defaults or 0 for other fields
      *
      * @param mixed $value
+     * @param string $field
      * @return float|null
      */
-    private function cleanNumericValue($value)
+    private function cleanNumericValue($value, $field)
     {
         // Remove any whitespace
         $value = trim($value);
 
-        // Check for "NAN" or empty values
+        // Check for "NAN" or empty values and set defaults for specific fields
         if ($value === 'NAN' || $value === '' || $value === null) {
-            return 0; // or return 0.0 if you prefer to store 0 instead of null
+            if ($field === 'Suhu') {
+                return 28; // Default for temperature
+            } elseif ($field === 'Kelembaban') {
+                return 80; // Default for humidity
+            }
+            return 0; // or return 0.0 if you prefer to store 0 instead of null for other fields
         }
 
         // Convert to float

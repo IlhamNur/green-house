@@ -245,7 +245,7 @@
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row">
-                @if (isset($sensorDatas[0]))
+                @if (isset($sensorDatas[1]))
                     <div class="col-lg-8 mb-4 order-0">
                 @else
                     <div class="col-lg mb-4 order-0">
@@ -258,7 +258,7 @@
                           <p class="mb-4">
                             @if (isset($greenhouse))
                                 This is your <span class="fw-bold">{{ $greenhouse->name }}</span> dashboard monitoring. Harvest in {{ $daysUntil }} days 🎉🎉🎉.
-                                @if (!isset($sensorDatas[0]))
+                                @if (!isset($sensorDatas[1]))
                                     This greenhouse has no data.
                                 @endif
                                     Change the greenhouse data you want to display by clicking the button below.
@@ -284,7 +284,7 @@
                     </div>
                   </div>
                 </div>
-                @if (isset($sensorDatas[0]))
+                @if (isset($sensorDatas[1]))
                     <div class="col-lg-4 col-md-4 order-1">
                     <div class="row">
                         <div class="col-lg-6 col-md-12 col-6 mb-4">
@@ -493,7 +493,7 @@
 
     <!-- Main JS -->
     <!-- Pass PHP data to JavaScript using inline script -->
-    @if (isset($sensorDatas[0]))
+    @if (isset($sensorDatas[1]))
         @php
             $lights = [];
             $waters = [];
