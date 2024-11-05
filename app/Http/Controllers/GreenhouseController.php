@@ -123,7 +123,11 @@ class GreenhouseController extends Controller
         ]);
 
         Period::where('id', $id)->update($data);
-        $this->publishToMqtt($id, $data);
+        $period = Period::where('id', $id)->firstOrFail();
+        $gh_id = $period->gh_id;
+
+
+        $this->publishToMqtt($gh_id, $data);
 
         return redirect()->back()->with('success', 'Greenhouse period updated successfully!');
     }
