@@ -353,10 +353,115 @@
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             Close
                         </button>
+                        @if(Auth::user()->role == 'superadmin')
+                            <button
+                                class="btn btn-primary"
+                                data-bs-target="#modalToggle{{ $plant_list->id }}_edit"
+                                data-bs-toggle="modal"
+                                data-bs-dismiss="modal"
+                            >
+                                Edit
+                            </button>
+                        @endif
                         </div>
                     </div>
                     </div>
                 </div>
+
+
+            <!-- Modal 2-->
+            <div class="modal fade" id="modalToggle{{ $plant_list->id }}_edit" aria-hidden="true" aria-labelledby="modalToggleLabel{{ $plant_list->id }}_edit" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalToggleLabel{{ $plant_list->id }}_edit">Edit Data {{ $plant_list->name }}</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <form action="{{ route('plant-update', $plant_list->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="plant_name" class="form-label">Plant Name</label>
+                                        <input type="text" id="plant_name" name="plant_name" class="form-control class="form-control @error('plant_name') is-invalid @enderror" value="{{ $plant_list->plant_name }}" required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="picture" class="form-label">Picture</label>
+                                        <input type="file" id="picture" name="picture" class="form-control class="form-control @error('picture') is-invalid @enderror" value="{{ $plant_list->picture }}" required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="latin_name" class="form-label">Latin Name</label>
+                                        <input type="text" id="latin_name" name="latin_name" class="form-control class="form-control @error('latin_name') is-invalid @enderror" value="{{ $plant_list->latin_name }}"  required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="temperature" class="form-label">Temperature</label>
+                                        <input type="number" id="temperature" name="temperature" class="form-control class="form-control @error('temperature') is-invalid @enderror" value="{{ $plant_list->temperature }}"  required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="humidity" class="form-label">Humidity</label>
+                                        <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('humidity') is-invalid @enderror" value="{{ $plant_list->humidity }}"  required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="nutrition" class="form-label">Nutrition</label>
+                                        <input type="number" id="nutrition" name="nutrition" class="form-control class="form-control @error('nutrition') is-invalid @enderror" value="{{ $plant_list->nutrition }}"  required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="light" class="form-label">Light</label>
+                                        <input type="number" id="light" name="light" class="form-control class="form-control @error('light') is-invalid @enderror" value="{{ $plant_list->light }}"  required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="water_f" class="form-label">Water Level Full</label>
+                                        <input type="number" id="water_f" name="water_f" class="form-control class="form-control @error('water_f') is-invalid @enderror" value="{{ $plant_list->water_f }}"  required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="water_e" class="form-label">Water Full Emergency</label>
+                                        <input type="number" id="water_e" name="water_e" class="form-control class="form-control @error('water_e') is-invalid @enderror" value="{{ $plant_list->water_e }}"  required/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="harvest_time" class="form-label">Harvest Time</label>
+                                        <input type="number" id="harvest_time" name="harvest_time" class="form-control class="form-control @error('harvest_time') is-invalid @enderror" value="{{ $plant_list->harvest_time }}"  required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            <button
+                                class="btn btn-outline-secondary"
+                                data-bs-target="#modalToggle{{ $plant_list->id }}"
+                                data-bs-toggle="modal"
+                                data-bs-dismiss="modal"
+                            >
+                                Back
+                            </button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
                 {{-- Delete Alert Modal --}}
                 <div class="modal fade" id="smallModal{{ $plant_list->id }}" tabindex="-1" aria-hidden="true">
@@ -439,7 +544,7 @@
                         <div class="row">
                             <div class="col mb-3">
                             <label for="humidity" class="form-label">Humidity</label>
-                            <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('name') is-invalid @enderror" required/>
+                            <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('humidity') is-invalid @enderror" required/>
                             </div>
                         </div>
                         <div class="row">

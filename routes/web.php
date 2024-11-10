@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     // Routes for users with 'superadmin' role
     Route::middleware([RoleMiddleware::class . ':superadmin'])->group(function () {
         Route::post('/plant-list', [PlantController::class, 'store'])->name('plant-insert');
+        Route::put('/plant-list/{id}', [PlantController::class, 'update'])->name('plant-update');
         Route::delete('/plant-list/{id}', [PlantController::class, 'destroy'])->name('plant-list-destroy');
     });
 });

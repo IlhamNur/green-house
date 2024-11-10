@@ -37,6 +37,32 @@ class PlantController extends Controller
         return redirect()->back()->withSuccess('Plant added successfully!');
     }
 
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'plant_name' => 'required|string|max:255',
+            'picture' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'latin_name' => 'required|string|max:255',
+            'temperature' => 'required|numeric',
+            'humidity' => 'required|numeric',
+            'nutrition' => 'required|numeric',
+            'light' => 'required|numeric',
+            'water_f' => 'required|numeric',
+            'water_e' => 'required|numeric',
+            'harvest_time' => 'required|numeric'
+        ]);
+
+        if ($file = $request->file('picture')) {
+            $data['picture'] = $file->store('plant_pictures', 'public');
+        } else {
+            unset($data['picture']); // To avoid setting `picture` to null if not uploaded
+        }
+
+        PlantList::where('id', $id)->update($data);
+
+        return redirect()->back()->withSuccess('Plant updated successfully!');
+    }
+
     public function destroy($id)
     {
         $plant = PlantList::findOrFail($id);

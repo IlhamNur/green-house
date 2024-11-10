@@ -549,7 +549,7 @@
                             <div class="row">
                                 <div class="col mb-3">
                                   <label for="humidity" class="form-label">Humidity</label>
-                                  <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('name') is-invalid @enderror" value="{{ $period->humidity }}" required/>
+                                  <input type="number" id="humidity" name="humidity" class="form-control class="form-control @error('humidity') is-invalid @enderror" value="{{ $period->humidity }}" required/>
                                 </div>
                             </div>
                             <div class="row">
