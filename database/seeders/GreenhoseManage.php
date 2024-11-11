@@ -23,9 +23,25 @@ class GreenhoseManage extends Seeder
             'pin_status' => 1,
         ]);
 
+        DB::table('list_greenhouses')->insert([
+            'name' => 'greenhousenya',
+            'id_user' => 1,
+            'id_tanaman' => 1,
+            'pin_status' => 1,
+        ]);
+
         //
         DB::table('sensor_data')->insert([
             'id_greenhouse' => 1,
+            'temperature' => 25,
+            'humidity' => 89,
+            'ph' => 8,
+            'soil_moisture' => 30,    
+            'light_intensity' => 900, 
+        ]);
+        
+        DB::table('sensor_data')->insert([
+            'id_greenhouse' => 2,
             'temperature' => 25,
             'humidity' => 89,
             'ph' => 8,
