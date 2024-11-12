@@ -22,7 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $tanaman = TanamanJenis::all();
+            $userId = auth()->id();  // Get the logged-in user's id
+            $tanaman = TanamanJenis::where('id_user', $userId)->get();  // Filter based on user id
             $view->with('tanaman', $tanaman);
         });
     }
