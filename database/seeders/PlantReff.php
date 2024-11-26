@@ -14,7 +14,8 @@ class PlantReff extends Seeder
      */
     public function run(): void
     {
-        $plants = [
+        $plants = 
+        [
             [
                 'name' => 'Sawi',
                 'picture' => 'assets/img/plants/sawi.png',
@@ -24,6 +25,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1500,
                 'soil_max' => 30,
                 'soil_min' => 20,
+                'planting_duration' => 40,
             ],
             [
                 'name' => 'Selada',
@@ -34,6 +36,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1500,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 45,
             ],
             [
                 'name' => 'Bayam',
@@ -44,6 +47,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1200,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 30,
             ],
             [
                 'name' => 'Kangkung',
@@ -54,6 +58,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1500,
                 'soil_max' => 80,
                 'soil_min' => 70,
+                'planting_duration' => 25,
             ],
             [
                 'name' => 'Kemangi',
@@ -64,6 +69,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 2000,
                 'soil_max' => 60,
                 'soil_min' => 50,
+                'planting_duration' => 50,
             ],
             [
                 'name' => 'Tomat',
@@ -74,6 +80,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1500,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 70,
             ],
             [
                 'name' => 'Seledri',
@@ -84,6 +91,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1500,
                 'soil_max' => 80,
                 'soil_min' => 70,
+                'planting_duration' => 90,
             ],
             [
                 'name' => 'Mentimun',
@@ -94,6 +102,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 2500,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 50,
             ],
             [
                 'name' => 'Pakcoy',
@@ -104,6 +113,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1000,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 30,
             ],
             [
                 'name' => 'Brokoli',
@@ -114,6 +124,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1500,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 100,
             ],
             [
                 'name' => 'Wortel',
@@ -124,6 +135,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1800,
                 'soil_max' => 60,
                 'soil_min' => 50,
+                'planting_duration' => 120,
             ],
             [
                 'name' => 'Buncis',
@@ -134,6 +146,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1700,
                 'soil_max' => 70,
                 'soil_min' => 50,
+                'planting_duration' => 60,
             ],
             [
                 'name' => 'Lobak',
@@ -144,6 +157,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1500,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 50,
             ],
             [
                 'name' => 'Kacang Panjang',
@@ -154,6 +168,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1700,
                 'soil_max' => 65,
                 'soil_min' => 50,
+                'planting_duration' => 60,
             ],
             [
                 'name' => 'Paprika',
@@ -164,6 +179,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 2000,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 80,
             ],
             [
                 'name' => 'Terong',
@@ -174,6 +190,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 2000,
                 'soil_max' => 75,
                 'soil_min' => 60,
+                'planting_duration' => 80,
             ],
             [
                 'name' => 'Zucchini',
@@ -184,6 +201,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1800,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 50,
             ],
             [
                 'name' => 'Bit Merah',
@@ -194,6 +212,7 @@ class PlantReff extends Seeder
                 'light_intensity' => 1600,
                 'soil_max' => 65,
                 'soil_min' => 50,
+                'planting_duration' => 55,
             ],
             [
                 'name' => 'Daun Bawang',
@@ -204,8 +223,10 @@ class PlantReff extends Seeder
                 'light_intensity' => 1500,
                 'soil_max' => 70,
                 'soil_min' => 60,
+                'planting_duration' => 80,
             ],
         ];
+        
 
         DB::table('tanamanjenisadmins')->insert($plants);
     }

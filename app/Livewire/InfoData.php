@@ -28,19 +28,18 @@ class InfoData extends Component
     public function fetchData()
     {
         // Fetch data from your database table
-        $this->data = DB::selectone('
-            SELECT SD.temperature, SD.humidity, SD.ph, SD.soil_moisture, SD.light_intensity, LG.pin_status, SD.id_greenhouse AS id
-            FROM sensor_data AS SD
-            INNER JOIN list_greenhouses AS LG ON SD.id_greenhouse = LG.id
-            WHERE SD.id_greenhouse = ?
-            ORDER BY SD.id DESC
-            LIMIT 1
+        $this->data = DB::select('
+            SELECT PG.id AS id, TJ.name AS nama, PG.panen_time AS panen, PG.tanam_time AS tanam, PG.done AS done
+            FROM period_greenhouses AS PG 
+            INNER JOIN tanamanjenis AS TJ ON TJ.id = PG.id_tanaman
+            WHERE PG.id_greenhouse = ?
         ', [$this->id]);
 
         $this->threshold = DB::selectone('
-            SELECT Lg.id, LG.name AS nama ,TJ.temperature AS tTem, TJ.humidity AS tHum, TJ.soil_min AS tSoil, TJ.light_intensity AS tLig
+            SELECT LG.id, LG.name AS nama ,TJ.temperature AS tTem, TJ.humidity AS tHum, TJ.soil_min AS tSoil, TJ.light_intensity AS tLig
             FROM tanamanjenis AS TJ
-            INNER JOIN list_greenhouses AS LG ON Lg.id_tanaman = TJ.id
+            INNER JOIN period_greenhouses AS PD ON PD.id_tanaman = TJ.id_user
+            INNER JOIN list_greenhouses AS LG ON LG.id = PD.id_greenhouse
             WHERE LG.id = ?
         ', [$this->id]);
     }

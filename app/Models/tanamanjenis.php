@@ -9,6 +9,8 @@ class TanamanJenis extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
+
     protected $table = 'tanamanjenis';
 
     protected $fillable = [

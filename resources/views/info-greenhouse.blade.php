@@ -1,48 +1,114 @@
 @extends('layouts.default')
 
 @section('content')
-  
-@livewireStyles
 
-@livewire('info-data', ['id' => $data->id])
-
-@livewireScripts
-
-<div class="row" id="rotateDiv">
-    <div class= "col-2">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editGreenhouse">
-            Edit Greenhouse
-        </button>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h2 class="m-0 font-weight-bold text-primary">Period List</h2>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addperiod" >New Period</button>
     </div>
-    <div class="col">
-        <form action="{{ route('publishtreshGreenhouse', $data -> id) }}" method="post">
-            @CSRF
-            <button type="submit" class="btn btn-primary">
-                Publish Plant Treshold
-            </button>
-        </form>
+    <div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Plant</th>
+                    <th>Planting Date</th>
+                    <th>Harvest Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $datas)
+                <tr>
+                    <td>{{$loop->iteration}}</td>
+                    <td class="w-25">{{$datas->nama}}</td>
+                    <td>{{$datas->tanam}}</td>
+                    <td>{{$datas->panen}}</td>
+                    <td class="w-25">
+                        @if ($datas->done == 0)
+                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#editperiod{{$datas->id}}">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <form action="{{ route('endPeriod', $datas->id) }}" method="post" style="display:inline;">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="bi bi-stop"></i>
+                            </button>
+                        </form>
+                        @endif
+                        <form action="{{ route('ExportData', $datas->id) }}" method="get" style="display:inline;">
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                
+                <div class="modal fade" id="editperiod{{$datas->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New Period</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('editPeriod', $datas->id) }}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <!-- Dropdown for jenis tanaman -->
+                                <div class="form-group">
+                                    <label for="jenisTanamanBtnedit" class="col-form-label">Jenis Tanaman:</label>
+                                    <div class="dropdown">
+                                    <button class="dropdown-toggle-edit" type="button" id="editJenisTanamanBtn{{$datas->id}}" onclick="toggleEditDropdown({{$datas->id}})">
+                                            Pilih Jenis Tanaman
+                                        </button>
+                                        <ul class="dropdown-menu-edit" id="editDropdownMenu{{$datas->id}}">
+                                            @foreach ($tanaman as $data)
+                                            <li>
+                                                <a class="dropdown-item-edit" href="#" onclick="selectEditItem(event, '{{$data->id}}', '{{$data->name}}', {{$datas->id}})">
+                                                    {{$data->name}}
+                                                </a>
+                                            </li>                                            
+                                            @endforeach
+                                        </ul>
+                                        <input type="hidden" name="edit_id_tanaman" id="edit_id_tanaman{{$datas->id}}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit"  class="btn btn-primary">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     </div>
 </div>
 
 
 
-<div class="modal fade" id="editGreenhouse" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addperiod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add Greenhouse</h5>
+            <h5 class="modal-title" id="exampleModalLabel">New Period</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <form action="{{ route('updateGreenhouse', $data -> id) }}" method="post">
+            <form action="{{ route('addPeriod', $datas->idgh) }}" method="post">
                 @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Name:</label>
-                    <input type="text" class="form-control" id="recipient-name" name="name" value="{{$data->name}}">
-                </div>
                 <!-- Dropdown for jenis tanaman -->
                 <div class="form-group">
                             <label for="jenisTanamanBtn" class="col-form-label">Jenis Tanaman:</label>
@@ -52,17 +118,19 @@
                                 </button>
                                 <ul class="dropdown-menu" id="dropdownMenu">
                                     @foreach ($tanaman as $data)
-                                    <li><a class="dropdown-item" href="#" onclick="selectItem(event, '{{$data->id}}', '{{$data->name}}')">{{$data->name}}</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="selectItem(event, '{{$data->id}}', '{{$data->name}}', {{$datas->id}})">
+                                            {{$data->name}}
+                                        </a>
+                                    </li>                                    
                                     @endforeach
                                 </ul>
                                 <input type="hidden" name="id_tanaman" id="id_tanaman">
                             </div>
                         </div>
-
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit"  class="btn btn-primary">Add Greenhouse</button>
+                    <button type="submit"  class="btn btn-primary">Add</button>
                 </div>
             </form>
         </div>
@@ -130,4 +198,37 @@
             }
         }
     </script>
+
+<script>
+    function toggleEditDropdown(id) {
+        const dropdownMenu = document.getElementById("editDropdownMenu" + id);
+
+        if (dropdownMenu) {
+            dropdownMenu.classList.toggle("show");
+            console.log("Dropdown toggled:", dropdownMenu.classList.contains("show"));
+        } else {
+            console.error("Dropdown menu element not found!");
+        }
+    }
+
+    function selectEditItem(event, id, name, buttonId) {
+        event.preventDefault();
+        document.getElementById("editJenisTanamanBtn" + buttonId).textContent = name;
+        document.getElementById("edit_id_tanaman" + buttonId).value = id; // Ensure this sets the value
+        document.getElementById("editDropdownMenu" + buttonId).classList.remove("show");
+    }
+
+    // Close the dropdown in the edit modal if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropdown-toggle-edit')) {
+            var dropdowns = document.querySelectorAll(".dropdown-menu-edit");
+            dropdowns.forEach(function(openDropdown) {
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            });
+        }
+    };
+</script>
+
 @endsection

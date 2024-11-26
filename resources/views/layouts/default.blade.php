@@ -82,6 +82,53 @@
         .dropdown-item:hover {
             background-color: #ddd;
         }
+
+        .edit-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle-edit {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .dropdown-toggle-edit:focus {
+            outline: none;
+        }
+
+        .dropdown-menu-edit {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 4px;
+            margin-top: 5px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .dropdown-menu-edit.show {
+            display: block;
+        }
+
+        .dropdown-item-edit {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-item-edit:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 

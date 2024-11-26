@@ -21,7 +21,6 @@ class TanamanJenisAdmin extends Model
         'soil_max',
         'soil_min',
         'light_intensity',
-        'updated_at',
-        'created_at',
+        'planting_duration',
       ];
 }

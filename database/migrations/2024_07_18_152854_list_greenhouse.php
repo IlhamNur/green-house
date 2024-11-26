@@ -15,14 +15,23 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('id_user');
             $table->string('name')->index();
-            $table->unsignedInteger('id_tanaman')->nullable();
             $table->boolean('pin_status')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
+        Schema::create('period_greenhouses', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('id_greenhouse');
+            $table->unsignedInteger('id_tanaman')->nullable();
+            $table->date('tanam_time')->nullable();
+            $table->date('panen_time')->nullable();
+            $table->boolean('done')->nullable();
+            $table->timestamps();
+        });
         Schema::create('sensor_data', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('id_greenhouse');
+            $table->unsignedInteger('id_period');
             $table->unsignedInteger('temperature');
             $table->unsignedInteger('humidity');
             $table->unsignedInteger('ph');

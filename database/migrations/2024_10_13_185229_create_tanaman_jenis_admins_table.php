@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedInteger('soil_max');
             $table->unsignedInteger('soil_min');
             $table->unsignedInteger('light_intensity');
+            $table->unsignedInteger('planting_duration');
             $table->timestamps();
         });
     }

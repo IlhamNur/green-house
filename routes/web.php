@@ -29,8 +29,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/info-manage-greenhouse/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'edit'])->name('editGreenhouse');
     
     Route::get('/info-data-greenhouse/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'infodata'])->name('infodataGreenhouse');
-    
+
     Route::post('/publish-treshold/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'publishtresh'])->name('publishtreshGreenhouse');
+    
+    Route::post('/add-period/{id_greenhouse}', [App\Http\Controllers\manageController::class, 'storeperiode'])->name('addPeriod');
+
+    Route::get('/export-sensor-data/{id_period}', [App\Http\Controllers\manageController::class, 'exportsensordata'])->name('ExportData');
+
+    Route::put('/end-period/{id_period}', [App\Http\Controllers\manageController::class, 'endperiod'])->name('endPeriod');
+
+    Route::put('/edit-period/{id_period}', [App\Http\Controllers\manageController::class, 'editperiod'])->name('editPeriod');
     
     //tanaman
     Route::get('/tanaman', [App\Http\Controllers\tanamanController::class, 'index'])->name('Tanaman');

@@ -9,12 +9,13 @@ class List_Greenhouse extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
+    
     protected $table = 'list_greenhouses';
 
     protected $fillable = [
         'name',
         'id_user',
-        'id_tanaman',
         'pin_status',
         'updated_at',
         'created_at',
