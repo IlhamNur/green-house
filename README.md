@@ -3,7 +3,7 @@
 
 Green House is a web-based application for **plant management** and **planting planning**, built with the **Laravel** framework.
 
-![Laravel](https://img.shields.io/badge/Laravel-8.x-red?style=flat-square&logo=laravel)
+![Laravel](https://img.shields.io/badge/Laravel-12.x-red?style=flat-square&logo=laravel)
 ![SCSS](https://img.shields.io/badge/SCSS-40.9%25-pink?style=flat-square&logo=sass)
 ![Blade](https://img.shields.io/badge/Blade-Template-yellow?style=flat-square&logo=laravel)
 ![JavaScript](https://img.shields.io/badge/JavaScript-15.9%25-yellow?style=flat-square&logo=javascript)
